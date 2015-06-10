@@ -1,4 +1,4 @@
-package net.mollywhite.mbta.api.service;
+package net.mollywhite.mbta;
 
 import io.dropwizard.Configuration;
 

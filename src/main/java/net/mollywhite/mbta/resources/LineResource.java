@@ -1,7 +1,7 @@
-package net.mollywhite.mbta.api.service.resources;
+package net.mollywhite.mbta.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import net.mollywhite.mbta.api.service.api.Tweet;
+import net.mollywhite.mbta.api.Tweet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
