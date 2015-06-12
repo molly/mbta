@@ -1,5 +1,6 @@
 package net.mollywhite.mbta.client;
 
+import com.google.inject.Singleton;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -20,17 +21,17 @@ import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Singleton
 public class TwitterClient {
+  private final Client client;
+  private BlockingQueue<String> messageQueue;
 
-  public TwitterClient() {
-  }
-
-  public void run() throws IOException, InterruptedException {
+  public TwitterClient() throws IOException {
     Properties props = new Properties();
     InputStream is = this.getClass().getClassLoader().getResourceAsStream("./secrets.properties");
     props.load(is);
 
-    BlockingQueue<String> messageQueue = new LinkedBlockingQueue<String>(100000);
+    this.messageQueue = new LinkedBlockingQueue<String>(100000);
     BlockingQueue<Event> eventQueue = new LinkedBlockingQueue<Event>(1000);
 
     Hosts hosts = new HttpHosts(Constants.STREAM_HOST);
@@ -53,12 +54,14 @@ public class TwitterClient {
         .processor(new StringDelimitedProcessor(messageQueue))
         .eventMessageQueue(eventQueue);
 
-    Client client = builder.build();
-    client.connect();
+    this.client = builder.build();
+  }
 
-    while (!client.isDone()) {
-      String msg = messageQueue.take();
-      System.out.println(msg);
-    }
+  public void run() throws IOException, InterruptedException {
+    this.client.connect();
+  }
+
+  public int getMessageQueueCapacity() {
+    return this.messageQueue.remainingCapacity();
   }
 }
