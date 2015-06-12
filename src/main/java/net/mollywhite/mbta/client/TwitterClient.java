@@ -8,9 +8,12 @@ import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
 
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -19,12 +22,11 @@ public class TwitterClient {
   public TwitterClient() {
   }
 
-  public static void main(String[] args) {
-    TwitterClient twitterClient = new TwitterClient();
-    twitterClient.run();
-  }
+  public void run() throws IOException {
+    Properties props = new Properties();
+    FileInputStream fis = new FileInputStream("../../../resources/secrets.properties");
+    props.load(fis);
 
-  public void run() {
     BlockingQueue<String> messageQueue = new LinkedBlockingQueue<String>(100000);
     BlockingQueue<Event> eventQueue = new LinkedBlockingQueue<Event>(1000);
 
@@ -34,6 +36,10 @@ public class TwitterClient {
     List<String> terms = new ArrayList<String>(Arrays.asList("mbta"));
     endpoint.trackTerms(terms);
 
-    Authentication auth = new OAuth1(consumerKey, consumerSecret, token, secret);
+    Authentication auth = new OAuth1(props.getProperty("twitterConsumerKey"),
+        props.getProperty("twitterConsumerSecret"),
+        props.getProperty("token"),
+        props.getProperty("secret")
+    );
   }
 }
