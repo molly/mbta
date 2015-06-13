@@ -1,10 +1,10 @@
 package net.mollywhite.mbta;
 
+import com.google.inject.Inject;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import net.mollywhite.mbta.client.TwitterClient;
 
 public class MbtaApplication extends Application<MbtaConfiguration> {
 
@@ -30,9 +30,8 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
     return "mbta";
   }
 
+  @Inject
   @Override
   public void run(MbtaConfiguration mbtaConfiguration, Environment environment) throws Exception {
-    TwitterClient twitterClient = new TwitterClient();
-    twitterClient.run();
   }
 }
