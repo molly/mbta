@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
 
 public class TwitterClientModule extends AbstractModule {
   @Override
@@ -17,5 +18,10 @@ public class TwitterClientModule extends AbstractModule {
   TwitterClient provideTwitterClient() throws IOException {
     TwitterClient twitterClient = new TwitterClient();
     return twitterClient;
+  }
+
+  @Provides
+  BlockingQueue<String> provideMessageQueue(TwitterClient twitterClient) {
+    return twitterClient.getMessageQueue();
   }
 }

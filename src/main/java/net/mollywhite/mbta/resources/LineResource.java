@@ -1,6 +1,7 @@
 package net.mollywhite.mbta.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ public class LineResource {
   final Logger logger = LoggerFactory.getLogger(LineResource.class);
 
   @GET
+  @Inject
   @Timed
   public List<String> LineResource() {
     tweets = new ArrayList<String>();

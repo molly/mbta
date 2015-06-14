@@ -55,13 +55,18 @@ public class TwitterClient {
         .eventMessageQueue(eventQueue);
 
     this.client = builder.build();
+    this.client.connect();
   }
 
-  public void run() throws IOException, InterruptedException {
-    this.client.connect();
+  public BlockingQueue<String> getMessageQueue() {
+    return this.messageQueue;
   }
 
   public int getMessageQueueCapacity() {
     return this.messageQueue.remainingCapacity();
+  }
+
+  public boolean isDone() {
+    return this.client.isDone();
   }
 }
