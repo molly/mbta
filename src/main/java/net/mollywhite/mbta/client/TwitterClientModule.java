@@ -10,7 +10,6 @@ import java.util.concurrent.BlockingQueue;
 public class TwitterClientModule extends AbstractModule {
   @Override
   protected void configure() {
-
   }
 
   @Provides
