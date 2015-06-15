@@ -32,9 +32,11 @@ public class TweetConsumer implements Runnable {
         logger.info("Shutting down Tweet consumer.");
       }
 
+      System.out.println(tweetStr);
       try {
         Tweet tweet = mapper.readValue(tweetStr, Tweet.class);
       } catch (IOException e) {
+        e.printStackTrace();
         logger.error("Couldn't parse tweet: %s", tweetStr);
       }
     }

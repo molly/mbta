@@ -1,0 +1,113 @@
+{
+  "created_at": "Sun Jun 14 22:34:47 +0000 2015",
+  "id": 610213825237884929,
+  "id_str": "610213825237884929",
+  "text": "@MBTA @MBTA_CR @BostonGlobe @7News in this case silence is not Golden can someone share with the people on this train when they will be off?",
+  "source": "\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+  "truncated": false,
+  "in_reply_to_status_id": 610210856945606656,
+  "in_reply_to_status_id_str": "610210856945606656",
+  "in_reply_to_user_id": 150334831,
+  "in_reply_to_user_id_str": "150334831",
+  "in_reply_to_screen_name": "MBTA",
+  "user": {
+    "id": 243519639,
+    "id_str": "243519639",
+    "name": "John Casey",
+    "screen_name": "johncaseywick",
+    "location": "Boston MA USA",
+    "url": null,
+    "description": null,
+    "protected": false,
+    "verified": false,
+    "followers_count": 101,
+    "friends_count": 172,
+    "listed_count": 0,
+    "favourites_count": 32,
+    "statuses_count": 620,
+    "created_at": "Thu Jan 27 06:36:42 +0000 2011",
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": false,
+    "lang": "en",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "C0DEED",
+    "profile_background_image_url": "http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+    "profile_background_image_url_https": "https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png",
+    "profile_background_tile": false,
+    "profile_link_color": "0084B4",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "profile_image_url": "http:\/\/pbs.twimg.com\/profile_images\/2789497755\/aee93b828a8f95c8d5b0eb14e82947ad_normal.jpeg",
+    "profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/2789497755\/aee93b828a8f95c8d5b0eb14e82947ad_normal.jpeg",
+    "profile_banner_url": "https:\/\/pbs.twimg.com\/profile_banners\/243519639\/1351700039",
+    "default_profile": true,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "entities": {
+    "hashtags": [],
+    "trends": [],
+    "urls": [],
+    "user_mentions": [
+      {
+        "screen_name": "MBTA",
+        "name": "MBTA",
+        "id": 150334831,
+        "id_str": "150334831",
+        "indices": [
+          0,
+          5
+        ]
+      },
+      {
+        "screen_name": "MBTA_CR",
+        "name": "MBTA Commuter Rail",
+        "id": 2535372901,
+        "id_str": "2535372901",
+        "indices": [
+          6,
+          14
+        ]
+      },
+      {
+        "screen_name": "BostonGlobe",
+        "name": "The Boston Globe",
+        "id": 95431448,
+        "id_str": "95431448",
+        "indices": [
+          15,
+          27
+        ]
+      },
+      {
+        "screen_name": "7News",
+        "name": "7News Boston",
+        "id": 16558796,
+        "id_str": "16558796",
+        "indices": [
+          28,
+          34
+        ]
+      }
+    ],
+    "symbols": []
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false,
+  "filter_level": "low",
+  "lang": "en",
+  "timestamp_ms": "1434321287818"
+}

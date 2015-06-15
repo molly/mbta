@@ -1,5 +1,7 @@
 package net.mollywhite.mbta.client;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -22,5 +24,11 @@ public class TwitterClientModule extends AbstractModule {
   @Provides
   BlockingQueue<String> provideMessageQueue(TwitterClient twitterClient) {
     return twitterClient.getMessageQueue();
+  }
+
+  @Provides
+  ObjectMapper provideObjectMapper() {
+    ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    return mapper;
   }
 }
