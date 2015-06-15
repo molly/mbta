@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Tweet {
@@ -52,5 +53,31 @@ public class Tweet {
     this.favoriteCount = favoriteCount;
     this.entities = entities;
     this.timestampMs = Instant.ofEpochMilli(Long.valueOf(timestampMs));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Tweet tweet = (Tweet) o;
+    return Objects.equals(retweetCount, tweet.retweetCount) &&
+        Objects.equals(favoriteCount, tweet.favoriteCount) &&
+        Objects.equals(createdAt, tweet.createdAt) &&
+        Objects.equals(idStr, tweet.idStr) &&
+        Objects.equals(text, tweet.text) &&
+        Objects.equals(inReplyToStatusIdStr, tweet.inReplyToStatusIdStr) &&
+        Objects.equals(inReplyToUserIdStr, tweet.inReplyToUserIdStr) &&
+        Objects.equals(inReplyToScreenName, tweet.inReplyToScreenName) &&
+        Objects.equals(user, tweet.user) &&
+        Objects.equals(coordinates, tweet.coordinates) &&
+        Objects.equals(place, tweet.place) &&
+        Objects.equals(retweetedStatus, tweet.retweetedStatus) &&
+        Objects.equals(entities, tweet.entities) &&
+        Objects.equals(timestampMs, tweet.timestampMs);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(createdAt, idStr, text, inReplyToStatusIdStr, inReplyToUserIdStr, inReplyToScreenName, user, coordinates, place, retweetedStatus, retweetCount, favoriteCount, entities, timestampMs);
   }
 }
