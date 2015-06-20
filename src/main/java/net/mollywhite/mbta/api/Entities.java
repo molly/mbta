@@ -44,14 +44,14 @@ public class Entities {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Entities entities = (Entities) o;
-    return Objects.equals(hashtags, entities.hashtags) &&
-        Objects.equals(media, entities.media) &&
-        Objects.equals(urls, entities.urls) &&
-        Objects.equals(userMentions, entities.userMentions);
+    return Objects.equals(getHashtags(), entities.getHashtags()) &&
+        Objects.equals(getMedia(), entities.getMedia()) &&
+        Objects.equals(getUrls(), entities.getUrls()) &&
+        Objects.equals(getUserMentions(), entities.getUserMentions());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashtags, media, urls, userMentions);
+    return Objects.hash(getHashtags(), getMedia(), getUrls(), getUserMentions());
   }
 }

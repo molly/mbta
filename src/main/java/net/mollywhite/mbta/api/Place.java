@@ -29,12 +29,12 @@ public class Place {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Place place = (Place) o;
-    return Objects.equals(fullName, place.fullName) &&
-        Objects.equals(name, place.name);
+    return Objects.equals(getFullName(), place.getFullName()) &&
+        Objects.equals(getName(), place.getName());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fullName, name);
+    return Objects.hash(getFullName(), getName());
   }
 }

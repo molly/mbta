@@ -55,32 +55,6 @@ public class Tweet {
     this.timestampMs = Instant.ofEpochMilli(Long.valueOf(timestampMs));
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Tweet tweet = (Tweet) o;
-    return Objects.equals(retweetCount, tweet.retweetCount) &&
-        Objects.equals(favoriteCount, tweet.favoriteCount) &&
-        Objects.equals(createdAt, tweet.createdAt) &&
-        Objects.equals(idStr, tweet.idStr) &&
-        Objects.equals(text, tweet.text) &&
-        Objects.equals(inReplyToStatusIdStr, tweet.inReplyToStatusIdStr) &&
-        Objects.equals(inReplyToUserIdStr, tweet.inReplyToUserIdStr) &&
-        Objects.equals(inReplyToScreenName, tweet.inReplyToScreenName) &&
-        Objects.equals(user, tweet.user) &&
-        Objects.equals(coordinates, tweet.coordinates) &&
-        Objects.equals(place, tweet.place) &&
-        Objects.equals(retweetedStatus, tweet.retweetedStatus) &&
-        Objects.equals(entities, tweet.entities) &&
-        Objects.equals(timestampMs, tweet.timestampMs);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(createdAt, idStr, text, inReplyToStatusIdStr, inReplyToUserIdStr, inReplyToScreenName, user, coordinates, place, retweetedStatus, retweetCount, favoriteCount, entities, timestampMs);
-  }
-
   public String getCreatedAt() {
     return createdAt;
   }
@@ -135,5 +109,31 @@ public class Tweet {
 
   public Instant getTimestampMs() {
     return timestampMs;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Tweet tweet = (Tweet) o;
+    return Objects.equals(getRetweetCount(), tweet.getRetweetCount()) &&
+        Objects.equals(getFavoriteCount(), tweet.getFavoriteCount()) &&
+        Objects.equals(getCreatedAt(), tweet.getCreatedAt()) &&
+        Objects.equals(getIdStr(), tweet.getIdStr()) &&
+        Objects.equals(getText(), tweet.getText()) &&
+        Objects.equals(getInReplyToStatusIdStr(), tweet.getInReplyToStatusIdStr()) &&
+        Objects.equals(getInReplyToUserIdStr(), tweet.getInReplyToUserIdStr()) &&
+        Objects.equals(getInReplyToScreenName(), tweet.getInReplyToScreenName()) &&
+        Objects.equals(getUser(), tweet.getUser()) &&
+        Objects.equals(getCoordinates(), tweet.getCoordinates()) &&
+        Objects.equals(getPlace(), tweet.getPlace()) &&
+        Objects.equals(getRetweetedStatus(), tweet.getRetweetedStatus()) &&
+        Objects.equals(getEntities(), tweet.getEntities()) &&
+        Objects.equals(getTimestampMs(), tweet.getTimestampMs());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getCreatedAt(), getIdStr(), getText(), getInReplyToStatusIdStr(), getInReplyToUserIdStr(), getInReplyToScreenName(), getUser(), getCoordinates(), getPlace(), getRetweetedStatus(), getRetweetCount(), getFavoriteCount(), getEntities(), getTimestampMs());
   }
 }
