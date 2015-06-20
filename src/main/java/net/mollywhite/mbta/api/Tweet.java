@@ -80,4 +80,60 @@ public class Tweet {
   public int hashCode() {
     return Objects.hash(createdAt, idStr, text, inReplyToStatusIdStr, inReplyToUserIdStr, inReplyToScreenName, user, coordinates, place, retweetedStatus, retweetCount, favoriteCount, entities, timestampMs);
   }
+
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  public String getIdStr() {
+    return idStr;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public Optional<String> getInReplyToStatusIdStr() {
+    return inReplyToStatusIdStr;
+  }
+
+  public Optional<String> getInReplyToUserIdStr() {
+    return inReplyToUserIdStr;
+  }
+
+  public Optional<String> getInReplyToScreenName() {
+    return inReplyToScreenName;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public Optional<List<Float>> getCoordinates() {
+    return coordinates;
+  }
+
+  public Optional<Place> getPlace() {
+    return place;
+  }
+
+  public Optional<Tweet> getRetweetedStatus() {
+    return retweetedStatus;
+  }
+
+  public int getRetweetCount() {
+    return retweetCount;
+  }
+
+  public int getFavoriteCount() {
+    return favoriteCount;
+  }
+
+  public Entities getEntities() {
+    return entities;
+  }
+
+  public Instant getTimestampMs() {
+    return timestampMs;
+  }
 }
