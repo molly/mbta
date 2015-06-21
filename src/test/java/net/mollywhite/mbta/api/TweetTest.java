@@ -22,7 +22,7 @@ public class TweetTest {
     users.add(new UserMention("2535372901", Lists.newArrayList(6, 14), "MBTA Commuter Rail", "MBTA_CR"));
     users.add(new UserMention("95431448", Lists.newArrayList(15, 27), "The Boston Globe", "BostonGlobe"));
     users.add(new UserMention("16558796", Lists.newArrayList(28, 34), "7News Boston", "7News"));
-    Tweet expected = new Tweet(
+    Tweet expectedReplyTo = new Tweet(
         "Sun Jun 14 22:34:47 +0000 2015",
         "610213825237884929",
         "@MBTA @MBTA_CR @BostonGlobe @7News in this case silence is not Golden can someone share with the people on this train when they will be off?",
@@ -50,7 +50,63 @@ public class TweetTest {
         "1434321287818"
     );
 
-    Tweet actual = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
-    assertEquals(expected, actual);
+    Tweet expectedRetweet = new Tweet(
+        "Sun Jun 21 17:27:47 +0000 2015",
+        "612673280051388416",
+        "RT @MBTA: #MBTA #OrangeLine evening Wellington - Oak Grove svc suspension starts 6/22 to make the subway more winter resilient: http://t.co\u2026",
+        null,
+        null,
+        null,
+        new User(
+            "21014931",
+            "Maureen Fox",
+            "maureenfox",
+            "http://pbs.twimg.com/profile_images/1993942809/image_normal.jpg",
+            "https://pbs.twimg.com/profile_images/1993942809/image_normal.jpg"
+        ),
+        null,
+        null,
+        new Tweet(
+            "Sun Jun 21 17:05:04 +0000 2015",
+            "612667561788997633",
+            "#MBTA #OrangeLine evening Wellington - Oak Grove svc suspension starts 6/22 to make the subway more winter resilient: http://t.co/QcmDEfbY4T",
+            null,
+            null,
+            null,
+            new User(
+               "150334831",
+                "MBTA",
+                "MBTA",
+                "http://pbs.twimg.com/profile_images/950550372/ProfilePic_normal.jpg",
+                "https://pbs.twimg.com/profile_images/950550372/ProfilePic_normal.jpg"
+            ),
+            null,
+            null,
+            null,
+            4,
+            1,
+            new Entities(
+                Lists.newArrayList(new Hashtag(Lists.newArrayList(0, 5), "MBTA"), new Hashtag(Lists.newArrayList(6, 17), "OrangeLine")),
+                null,
+                Lists.newArrayList(new URL("bit.ly/1exXdtK", "http://bit.ly/1exXdtK", Lists.newArrayList(118, 140), "http://t.co/QcmDEfbY4T")),
+                Collections.<UserMention> emptyList()
+            ),
+            null
+        ),
+        0,
+        0,
+        new Entities(
+            Lists.newArrayList(new Hashtag(Lists.newArrayList(10, 15), "MBTA"), new Hashtag(Lists.newArrayList(16, 27), "OrangeLine")),
+            null,
+            Lists.newArrayList(new URL("bit.ly/1exXdtK", "http://bit.ly/1exXdtK", Lists.newArrayList(139, 140), "http://t.co/QcmDEfbY4T")),
+            Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(3, 8), "MBTA", "MBTA"))
+        ),
+        "1434907667540"
+    );
+
+    Tweet actualReplyTo = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
+    Tweet actualRetweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    assertEquals(expectedReplyTo, actualReplyTo);
+    assertEquals(expectedRetweet, actualRetweet);
   }
 }

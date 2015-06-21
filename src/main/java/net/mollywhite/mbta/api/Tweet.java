@@ -52,7 +52,11 @@ public class Tweet {
     this.retweetCount = retweetCount;
     this.favoriteCount = favoriteCount;
     this.entities = entities;
-    this.timestampMs = Instant.ofEpochMilli(Long.valueOf(timestampMs));
+    if (timestampMs == null) {
+      this.timestampMs = null;
+    } else {
+      this.timestampMs = Instant.ofEpochMilli(Long.valueOf(timestampMs));
+    }
   }
 
   public String getCreatedAt() {
