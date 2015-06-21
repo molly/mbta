@@ -16,7 +16,7 @@ public class TweetTest {
   private static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   @Test
-  public void deserializesFromJSON() throws Exception {
+  public void tweetWithReplyToDeserializesFromJSON() throws Exception {
     List<UserMention> users = new ArrayList<UserMention>();
     users.add(new UserMention("150334831", Lists.newArrayList(0, 5), "MBTA", "MBTA"));
     users.add(new UserMention("2535372901", Lists.newArrayList(6, 14), "MBTA Commuter Rail", "MBTA_CR"));
@@ -42,14 +42,20 @@ public class TweetTest {
         0,
         0,
         new Entities(
-            Collections.<Hashtag> emptyList(),
+            Collections.<Hashtag>emptyList(),
             null,
-            Collections.<URL> emptyList(),
+            Collections.<URL>emptyList(),
             users
         ),
         "1434321287818"
     );
 
+    Tweet actualReplyTo = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
+    assertEquals(expectedReplyTo, actualReplyTo);
+  }
+
+  @Test
+  public void retweetDeserializesFromJson() throws Exception {
     Tweet expectedRetweet = new Tweet(
         "Sun Jun 21 17:27:47 +0000 2015",
         "612673280051388416",
@@ -74,7 +80,7 @@ public class TweetTest {
             null,
             null,
             new User(
-               "150334831",
+                "150334831",
                 "MBTA",
                 "MBTA",
                 "http://pbs.twimg.com/profile_images/950550372/ProfilePic_normal.jpg",
@@ -89,7 +95,7 @@ public class TweetTest {
                 Lists.newArrayList(new Hashtag(Lists.newArrayList(0, 5), "MBTA"), new Hashtag(Lists.newArrayList(6, 17), "OrangeLine")),
                 null,
                 Lists.newArrayList(new URL("bit.ly/1exXdtK", "http://bit.ly/1exXdtK", Lists.newArrayList(118, 140), "http://t.co/QcmDEfbY4T")),
-                Collections.<UserMention> emptyList()
+                Collections.<UserMention>emptyList()
             ),
             null
         ),
@@ -104,6 +110,12 @@ public class TweetTest {
         "1434907667540"
     );
 
+    Tweet actualRetweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    assertEquals(expectedRetweet, actualRetweet);
+  }
+
+  @Test
+  public void tweetWithPlaceDeserializesFromJson() throws Exception {
     Tweet expectedPlace = new Tweet(
         "Sun Jun 21 17:56:58 +0000 2015",
         "612680625368264704",
@@ -112,7 +124,7 @@ public class TweetTest {
         "150334831",
         "MBTA",
         new User(
-           "329939227",
+            "329939227",
             "Mark Brierley",
             "bostonbriles",
             "http://pbs.twimg.com/profile_images/1691141089/16379_logo_20110916094416_normal.jpg",
@@ -120,7 +132,7 @@ public class TweetTest {
         ),
         null,
         new Place(
-           "Sharon, MA",
+            "Sharon, MA",
             "Sharon"
         ),
         null,
@@ -129,17 +141,13 @@ public class TweetTest {
         new Entities(
             Lists.newArrayList(new Hashtag(Lists.newArrayList(116, 132), "manthisisdialup")),
             null,
-            Collections.<URL> emptyList(),
+            Collections.<URL>emptyList(),
             Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(0, 5), "MBTA", "MBTA"))
         ),
         "1434909418800"
     );
 
-    Tweet actualReplyTo = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
-    Tweet actualRetweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
     Tweet actualPlace = mapper.readValue(fixture("fixtures/TweetWithPlaceFixture.json"), Tweet.class);
-    assertEquals(expectedReplyTo, actualReplyTo);
-    assertEquals(expectedRetweet, actualRetweet);
     assertEquals(expectedPlace, actualPlace);
   }
 }
