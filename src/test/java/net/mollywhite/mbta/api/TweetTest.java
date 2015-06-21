@@ -104,9 +104,42 @@ public class TweetTest {
         "1434907667540"
     );
 
+    Tweet expectedPlace = new Tweet(
+        "Sun Jun 21 17:56:58 +0000 2015",
+        "612680625368264704",
+        "@MBTA, Customers can handle the bad better if you let them distract themselves easier on commuter rail and t lines. #manthisisdialup",
+        null,
+        "150334831",
+        "MBTA",
+        new User(
+           "329939227",
+            "Mark Brierley",
+            "bostonbriles",
+            "http://pbs.twimg.com/profile_images/1691141089/16379_logo_20110916094416_normal.jpg",
+            "https://pbs.twimg.com/profile_images/1691141089/16379_logo_20110916094416_normal.jpg"
+        ),
+        null,
+        new Place(
+           "Sharon, MA",
+            "Sharon"
+        ),
+        null,
+        0,
+        0,
+        new Entities(
+            Lists.newArrayList(new Hashtag(Lists.newArrayList(116, 132), "manthisisdialup")),
+            null,
+            Collections.<URL> emptyList(),
+            Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(0, 5), "MBTA", "MBTA"))
+        ),
+        "1434909418800"
+    );
+
     Tweet actualReplyTo = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
     Tweet actualRetweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    Tweet actualPlace = mapper.readValue(fixture("fixtures/TweetWithPlaceFixture.json"), Tweet.class);
     assertEquals(expectedReplyTo, actualReplyTo);
     assertEquals(expectedRetweet, actualRetweet);
+    assertEquals(expectedPlace, actualPlace);
   }
 }
