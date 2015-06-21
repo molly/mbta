@@ -49,8 +49,7 @@ public class TweetTest {
             null,
             Collections.<URL>emptyList(),
             users
-        ),
-        "1434321287818"
+        )
     );
 
     retweet = new Tweet(
@@ -93,8 +92,7 @@ public class TweetTest {
                 null,
                 Lists.newArrayList(new URL("bit.ly/1exXdtK", "http://bit.ly/1exXdtK", Lists.newArrayList(118, 140), "http://t.co/QcmDEfbY4T")),
                 Collections.<UserMention>emptyList()
-            ),
-            null
+            )
         ),
         0,
         0,
@@ -103,8 +101,7 @@ public class TweetTest {
             null,
             Lists.newArrayList(new URL("bit.ly/1exXdtK", "http://bit.ly/1exXdtK", Lists.newArrayList(139, 140), "http://t.co/QcmDEfbY4T")),
             Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(3, 8), "MBTA", "MBTA"))
-        ),
-        "1434907667540"
+        )
     );
 
     tweetWithPlace = new Tweet(
@@ -134,8 +131,7 @@ public class TweetTest {
             null,
             Collections.<URL>emptyList(),
             Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(0, 5), "MBTA", "MBTA"))
-        ),
-        "1434909418800"
+        )
     );
   }
 

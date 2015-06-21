@@ -2,14 +2,15 @@ package net.mollywhite.mbta.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.mollywhite.mbta.client.CreatedAtFormatter;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class Tweet {
-  private final String createdAt;
+  private final OffsetDateTime createdAt;
   private final String idStr;
   private final String text;
   private final Optional<String> inReplyToStatusIdStr;
@@ -22,7 +23,6 @@ public class Tweet {
   private final int retweetCount;
   private final int favoriteCount;
   private final Entities entities;
-  private final Instant timestampMs;
 
   @JsonCreator
   public Tweet(@JsonProperty("created_at") String createdAt,
@@ -37,9 +37,8 @@ public class Tweet {
                @JsonProperty("retweeted_status") Tweet retweetedStatus,
                @JsonProperty("retweet_count") int retweetCount,
                @JsonProperty("favorite_count") int favoriteCount,
-               @JsonProperty("entities") Entities entities,
-               @JsonProperty("timestamp_ms") String timestampMs) {
-    this.createdAt = createdAt;
+               @JsonProperty("entities") Entities entities) {
+    this.createdAt = CreatedAtFormatter.get(createdAt);
     this.idStr = idStr;
     this.text = text;
     this.inReplyToStatusIdStr = Optional.ofNullable(inReplyToStatusIdStr);
@@ -52,14 +51,9 @@ public class Tweet {
     this.retweetCount = retweetCount;
     this.favoriteCount = favoriteCount;
     this.entities = entities;
-    if (timestampMs == null) {
-      this.timestampMs = null;
-    } else {
-      this.timestampMs = Instant.ofEpochMilli(Long.valueOf(timestampMs));
-    }
   }
 
-  public String getCreatedAt() {
+  public OffsetDateTime getCreatedAt() {
     return createdAt;
   }
 
@@ -111,10 +105,6 @@ public class Tweet {
     return entities;
   }
 
-  public Instant getTimestampMs() {
-    return timestampMs;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -132,12 +122,11 @@ public class Tweet {
         Objects.equals(getCoordinates(), tweet.getCoordinates()) &&
         Objects.equals(getPlace(), tweet.getPlace()) &&
         Objects.equals(getRetweetedStatus(), tweet.getRetweetedStatus()) &&
-        Objects.equals(getEntities(), tweet.getEntities()) &&
-        Objects.equals(getTimestampMs(), tweet.getTimestampMs());
+        Objects.equals(getEntities(), tweet.getEntities());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getCreatedAt(), getIdStr(), getText(), getInReplyToStatusIdStr(), getInReplyToUserIdStr(), getInReplyToScreenName(), getUser(), getCoordinates(), getPlace(), getRetweetedStatus(), getRetweetCount(), getFavoriteCount(), getEntities(), getTimestampMs());
+    return Objects.hash(getCreatedAt(), getIdStr(), getText(), getInReplyToStatusIdStr(), getInReplyToUserIdStr(), getInReplyToScreenName(), getUser(), getCoordinates(), getPlace(), getRetweetedStatus(), getRetweetCount(), getFavoriteCount(), getEntities());
   }
 }
