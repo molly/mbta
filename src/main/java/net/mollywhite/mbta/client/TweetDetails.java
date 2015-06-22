@@ -8,6 +8,7 @@ import net.mollywhite.mbta.api.Tweet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class TweetDetails {
   private final Tweet tweet;
@@ -35,16 +36,16 @@ public class TweetDetails {
 
   private void getLines() {
     // TODO: This is janky, fix.
-    if (this.lowercaseTweetText.contains("red")) {
+    if (Pattern.matches("red|ashmont|alewife|braintree|mattapan", lowercaseTweetText)) {
       this.lines.add(Line.RED);
     }
-    if (this.lowercaseTweetText.contains("orange")) {
+    if (Pattern.matches("orange|forest hills|oak grove", lowercaseTweetText)) {
       this.lines.add(Line.ORANGE);
     }
-    if (this.lowercaseTweetText.contains("blue")) {
+    if (Pattern.matches("blue|wonderland|bowdoin", lowercaseTweetText)) {
       this.lines.add(Line.BLUE);
     }
-    if (this.lowercaseTweetText.contains("green")) {
+    if (Pattern.matches("green(?! st)|lechmere| bc |boston college|cleveland|riverside|heath", lowercaseTweetText)) {
       this.lines.add(Line.GREEN);
     }
   }
@@ -70,7 +71,12 @@ public class TweetDetails {
     }
     if (this.lowercaseTweetText.contains("mattapan")) {
       this.branches.add(Branch.MATTAPAN);
-      this.lines.add(Line.RED);
+    }
+    if (this.lowercaseTweetText.contains("ashmont")) {
+      this.branches.add(Branch.ASHMONT);
+    }
+    if (this.lowercaseTweetText.contains("braintree")) {
+      this.branches.add(Branch.BRAINTREE);
     }
   }
 
