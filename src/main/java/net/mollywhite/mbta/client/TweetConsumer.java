@@ -2,6 +2,8 @@ package net.mollywhite.mbta.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import net.mollywhite.mbta.api.Branch;
+import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.skife.jdbi.v2.DBI;
@@ -10,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 
 public class TweetConsumer implements Runnable {
@@ -45,5 +50,14 @@ public class TweetConsumer implements Runnable {
         logger.error("Couldn't parse tweet: %s", tweetStr);
       }
     }
+  }
+
+
+
+  private Optional<List<Branch>> getBranches(Tweet tweet) {
+    String lowercaseTweetText = tweet.getText().toLowerCase();
+    List<Branch> branches = new ArrayList<Branch>();
+    if (lowercaseTweetText.contains("red")) {
+
   }
 }

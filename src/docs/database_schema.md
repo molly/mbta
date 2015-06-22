@@ -8,9 +8,10 @@ CREATE TYPE direction AS ENUM ('inbound', 'outbound');
 CREATE TABLE tweets (
   tweet       TEXT NOT NULL,
   time        TIMESTAMP WITH TIME ZONE NOT NULL,
-  line        line,
-  branch      branch,
-  station     TEXT,
+  line        line[],
+  branch      branch[],
+  station     TEXT[],
+  vehicle     TEXT,
   direction   direction,
   image       BOOLEAN NOT NULL, 
   retweet     BOOLEAN NOT NULL,
