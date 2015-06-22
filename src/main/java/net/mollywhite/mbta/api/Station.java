@@ -55,6 +55,17 @@ public enum Station {
   STONYBROOK ("Stony Brook", Pattern.compile("stony"), Lists.newArrayList(Line.ORANGE), Collections.<Branch>emptyList()),
   GREENST ("Green Street", Pattern.compile("green st"), Lists.newArrayList(Line.ORANGE), Collections.<Branch>emptyList()),
   FORESTHILLS ("Forest Hills", Pattern.compile("forest hills st"), Lists.newArrayList(Line.ORANGE), Collections.<Branch>emptyList()),
+  WONDERLAND ("Wonderland", Pattern.compile("wonderland st"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  REVEREBEACH ("Revere Beach", Pattern.compile("revere"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  BEACHMONT ("Beachmont", Pattern.compile("beachmont"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  SUFFOLKDOWNS ("Suffolk Downs", Pattern.compile("suffolk downs"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  ORIENTHEIGHTS ("Orient Heights", Pattern.compile("orient"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  WOODISLAND ("Wood Island", Pattern.compile("wood island"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  AIRPORT ("Airport", Pattern.compile("airport st"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  MAVERICK ("Maverick", Pattern.compile("maverick"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  AQUARIUM ("Aquarium", Pattern.compile("aquarium"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  GOVTCTR ("Government Center", Pattern.compile("gov(ernment|t) (center|ctr)"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList()),
+  BOWDOIN ("Bowdoin", Pattern.compile("bowdoin st"), Lists.newArrayList(Line.BLUE), Collections.<Branch>emptyList());
 
   private final String name;
   private final Pattern searchTerm;
