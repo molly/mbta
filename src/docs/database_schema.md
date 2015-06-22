@@ -6,7 +6,7 @@ CREATE TYPE branch AS ENUM ('b', 'c', 'd', 'e', 'mattapan');
 CREATE TYPE direction AS ENUM ('inbound', 'outbound');
 
 CREATE TABLE tweets (
-  tweet       JSON NOT NULL,
+  tweet       TEXT NOT NULL,
   time        TIMESTAMP WITH TIME ZONE NOT NULL,
   line        line,
   branch      branch,
