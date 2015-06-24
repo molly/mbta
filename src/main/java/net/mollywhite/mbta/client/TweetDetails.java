@@ -17,7 +17,7 @@ public class TweetDetails {
   private final String lowercaseTweetText;
   private Set<Line> lines;
   private Set<Branch> branches;
-  private Set<Station> stations;
+  private Set<String> stations;
   private String vehicle;
   private Direction direction;
   private Boolean image;
@@ -88,7 +88,7 @@ public class TweetDetails {
         Set<Line> stationLines = station.getLines();
         Set<Branch> stationBranches = station.getBranches();
 
-        stations.add(station);
+        stations.add(station.name());
         if (!Collections.disjoint(lines, stationLines)) {
           logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet);
         }
@@ -117,7 +117,7 @@ public class TweetDetails {
     return branches;
   }
 
-  public Set<Station> getStations() {
+  public Set<String> getStations() {
     return stations;
   }
 

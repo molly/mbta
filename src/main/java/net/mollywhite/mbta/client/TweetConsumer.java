@@ -43,7 +43,8 @@ public class TweetConsumer implements Runnable {
 
       try {
         Tweet tweet = mapper.readValue(tweetStr, Tweet.class);
-        tweetDAO.insert(mapper.writeValueAsString(tweet), Timestamp.from(tweet.getCreatedAt().toInstant()), null, null, null, null, null, false, false, null, null);
+        TweetDetails tweetDetails = new TweetDetails(tweet).get();
+        tweetDAO.insert(mapper.writeValueAsString(tweet), Timestamp.from(tweet.getCreatedAt().toInstant()), tweetDetails.getLines(), tweetDetails.getBranches(), tweetDetails.getStations(), null, null, false, false, null, null);
       } catch (IOException e) {
         e.printStackTrace();
         logger.error("Couldn't parse tweet: %s", tweetStr);
