@@ -3,7 +3,6 @@ package net.mollywhite.mbta.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Branch;
-import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.skife.jdbi.v2.DBI;
@@ -44,7 +43,7 @@ public class TweetConsumer implements Runnable {
 
       try {
         Tweet tweet = mapper.readValue(tweetStr, Tweet.class);
-        tweetDAO.insert(mapper.writeValueAsString(tweet), Timestamp.from(tweet.getCreatedAt().toInstant()), null, null, null, null, false, false, false, null);
+        tweetDAO.insert(mapper.writeValueAsString(tweet), Timestamp.from(tweet.getCreatedAt().toInstant()), null, null, null, null, null, false, false, null, null);
       } catch (IOException e) {
         e.printStackTrace();
         logger.error("Couldn't parse tweet: %s", tweetStr);
@@ -57,7 +56,7 @@ public class TweetConsumer implements Runnable {
   private Optional<List<Branch>> getBranches(Tweet tweet) {
     String lowercaseTweetText = tweet.getText().toLowerCase();
     List<Branch> branches = new ArrayList<Branch>();
-    if (lowercaseTweetText.contains("red")) {
-
+//    if (lowercaseTweetText.contains("red")) {
+    return Optional.empty();
   }
 }
