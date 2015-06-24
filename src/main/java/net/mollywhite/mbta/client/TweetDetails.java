@@ -5,7 +5,10 @@ import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Station;
 import net.mollywhite.mbta.api.Tweet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -21,6 +24,8 @@ public class TweetDetails {
   private Boolean retweet;
   private Boolean official;
   private String category;
+
+  private static Logger logger = LoggerFactory.getLogger(TweetDetails.class);
 
   public TweetDetails(Tweet tweet) {
     this.tweet = tweet;
@@ -80,8 +85,17 @@ public class TweetDetails {
   private void getStationsFromTweet() {
     for (Station station : Station.values()) {
       if (station.getSearchTerm().matcher(this.lowercaseTweetText).matches()) {
+        Set<Line> stationLines = station.getLines();
+        Set<Branch> stationBranches = station.getBranches();
+
         stations.add(station);
-        lines.addAll(station.getLines());
+        if (!Collections.disjoint(lines, stationLines)) {
+          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet);
+        }
+        lines.addAll(stationLines);
+        if (!Collections.disjoint(branches, stationBranches)) {
+          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationBranches.toString(), this.tweet);
+        }
         branches.addAll(station.getBranches());
       }
     }
