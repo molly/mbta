@@ -28,12 +28,13 @@ public class TweetDetails {
   }
 
   public TweetDetails get() {
-    getLines();
-    getBranches();
+    getLinesFromTweet();
+    getBranchesFromTweet();
+    getStationsFromTweet();
     return this;
   }
 
-  private void getLines() {
+  private void getLinesFromTweet() {
     if (Pattern.matches("[^\\w]red(line|[^\\w])", lowercaseTweetText)) {
       this.lines.add(Line.RED);
     }
@@ -48,7 +49,7 @@ public class TweetDetails {
     }
   }
 
-  private void getBranches() {
+  private void getBranchesFromTweet() {
     if (this.lowercaseTweetText.contains("[^\\w]b[^\\w]")) {
       this.branches.add(Branch.B);
       this.lines.add(Line.GREEN);
@@ -76,11 +77,57 @@ public class TweetDetails {
     }
   }
 
-  private void getStations() {
+  private void getStationsFromTweet() {
     for (Station station : Station.values()) {
       if (station.getSearchTerm().matcher(this.lowercaseTweetText).matches()) {
         stations.add(station);
+        lines.addAll(station.getLines());
+        branches.addAll(station.getBranches());
       }
     }
+  }
+
+  public Tweet getTweet() {
+    return tweet;
+  }
+
+  public String getLowercaseTweetText() {
+    return lowercaseTweetText;
+  }
+
+  public Set<Line> getLines() {
+    return lines;
+  }
+
+  public Set<Branch> getBranches() {
+    return branches;
+  }
+
+  public Set<Station> getStations() {
+    return stations;
+  }
+
+  public String getVehicle() {
+    return vehicle;
+  }
+
+  public Direction getDirection() {
+    return direction;
+  }
+
+  public Boolean getImage() {
+    return image;
+  }
+
+  public Boolean getRetweet() {
+    return retweet;
+  }
+
+  public Boolean getOfficial() {
+    return official;
+  }
+
+  public String getCategory() {
+    return category;
   }
 }
