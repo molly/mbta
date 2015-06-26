@@ -84,7 +84,7 @@ public class TweetDetails {
 
   private void getStationsFromTweet() {
     for (Station station : Station.values()) {
-      if (station.getSearchTerm().matcher(this.lowercaseTweetText).matches()) {
+      if (station.inTweet(this.lowercaseTweetText)) {
         Set<Line> stationLines = station.getLines();
         Set<Branch> stationBranches = station.getBranches();
 

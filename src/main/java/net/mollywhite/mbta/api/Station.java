@@ -76,7 +76,7 @@ public enum Station {
   PRUDENTIAL ("Prudential", Pattern.compile("pru(dential)?([^\\w]|\\z)"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
   SYMPHONY ("Symphony", Pattern.compile("symphony"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
   NORTHEASTERN ("Northeastern", Pattern.compile("northeastern"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
-  MUSEUMOFFINEARTS ("Museum of Fine Arts", Pattern.compile("museum|mofa"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
+  MUSEUMOFFINEARTS ("Museum of Fine Arts", Pattern.compile("(museum|([^\\w]|\\A)mofa([^\\w]|\\z))"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
   LONGWOODMEDICALAREA ("Longwood Medical Area", Pattern.compile("longwood"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
   BRIGHAMCIRCLE ("Brigham Circle", Pattern.compile("brigham"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
   FENWOODRD ("Fenwood Road", Pattern.compile("fenwood"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.E)),
@@ -113,9 +113,9 @@ public enum Station {
   ENGLEWOODAVE ("Englewood Avenue", Pattern.compile("eng(le|el)wood"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.C)),
   CLEVELANDCIRCLE ("Cleveland Circle", Pattern.compile("cleveland"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.C)),
   BLANDFORDST ("Blandford Street", Pattern.compile("blandford"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
-  BUEAST ("Boston University East", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w] e"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
-  BUCENTRAL ("Boston University Central", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w] cent"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
-  BUWEST ("Boston University West", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w] w"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
+  BUEAST ("Boston University East", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w]e"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
+  BUCENTRAL ("Boston University Central", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w]cent"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
+  BUWEST ("Boston University West", Pattern.compile("([^\\w]|\\A)(bu|b\\.u\\.|boston univ(ersity)?)[^\\w]w"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   STPAULSTB ("St. Paul Street", Pattern.compile("([^\\w]|\\A)s(t\\.?|aint)[^\\w]paul"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   PLEASANTST ("Pleasant Street", Pattern.compile("pleasant"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   BABCOCKST ("Babcock Street", Pattern.compile("babcock"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
@@ -128,7 +128,7 @@ public enum Station {
   SUTHERLANDRD ("Sutherland Road", Pattern.compile("sutherland"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   CHISWICKRD ("Chiswick Road", Pattern.compile("chiswick"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   CHESTNUTHILLAVE ("Chestnut Hill Avenue", Pattern.compile("chestnut"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
-  SOUTHST ("South Street", Pattern.compile("([^\\w]|\\A)south st"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
+  SOUTHST ("South Street", Pattern.compile("([^\\w]|\\A)south st(?!ation)"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B)),
   BOSTONCOLLEGE ("Boston College", Pattern.compile("(([^\\w]|\\A)bc([^\\w]|\\z)|boston college)"), Sets.newHashSet(Line.GREEN), Sets.newHashSet(Branch.B));
 
   private final String name;
