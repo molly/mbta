@@ -9,11 +9,11 @@ import java.sql.Array;
 import java.sql.Timestamp;
 
 public interface TweetDAO {
-  @SqlUpdate("INSERT INTO tweets (tweet, time, line, branch, station, vehicle, direction, image, retweet, official, category)" +
-      " VALUES (:tweet, :time, :line, :branch, :station, :vehicle, :direction, :image, :retweet, :official, :category)")
+  @SqlUpdate("INSERT INTO tweets (tweet, time, line, branch, station, vehicles, direction, image, retweet, official, category)" +
+      " VALUES (:tweet, :time, :line, :branch, :station, :vehicles, :direction, :image, :retweet, :official, :category)")
   void insert(@Bind("tweet") String tweet, @Bind("time") Timestamp time, @Bind("line") Array lines,
               @Bind("branch") Array branches, @Bind("station") Array stations,
-              @Bind("vehicle") String vehicle, @Bind("direction") Direction direction, @Bind("image") Boolean hasImage,
+              @Bind("vehicles") Array vehicles, @Bind("direction") Direction direction, @Bind("image") Boolean hasImage,
               @Bind("retweet") Boolean isRetweet, @Bind("official") Boolean isOfficial,
               @Bind("category") String category);
 

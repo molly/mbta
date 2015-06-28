@@ -1,5 +1,6 @@
 package net.mollywhite.mbta.client;
 
+import com.google.common.collect.Lists;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TweetDetails {
@@ -19,7 +22,7 @@ public class TweetDetails {
   private Set<Line> lines;
   private Set<Branch> branches;
   private Set<Station> stations;
-  private String vehicle;
+  private HashSet<String> vehicles;
   private Direction direction;
   private Boolean image;
   private Boolean retweet;
@@ -34,6 +37,8 @@ public class TweetDetails {
     this.lines = new HashSet<Line>();
     this.branches = new HashSet<Branch>();
     this.stations = new HashSet<Station>();
+    this.vehicles = new HashSet<String>();
+    this.direction = null;
     this.image =  false;
     this.retweet = false;
     this.official = false;
@@ -43,6 +48,11 @@ public class TweetDetails {
     getLinesFromTweet();
     getBranchesFromTweet();
     getStationsFromTweet();
+    getVehiclesFromTweet();
+    getDirectionFromTweet();
+    getHasImageFromTweet();
+    getIsRetweetFromTweet();
+    getIsOfficialFromTweet();
     return this;
   }
 
@@ -108,6 +118,36 @@ public class TweetDetails {
     }
   }
 
+  private void getVehiclesFromTweet() {
+    Matcher m = Pattern.compile("\\d{3,5}").matcher(this.lowercaseTweetText);
+    while (m.find()) {
+      this.vehicles.add(m.group(0));
+    }
+  }
+
+  private void getDirectionFromTweet() {
+    if (this.lowercaseTweetText.contains("inbound") && this.lowercaseTweetText.contains("outbound")) {
+      return;
+    } else if (this.lowercaseTweetText.contains("inbound")) {
+      this.direction = Direction.INBOUND;
+    } else if (this.lowercaseTweetText.contains("outbound")) {
+      this.direction = Direction.OUTBOUND;
+    }
+  }
+
+  private void getHasImageFromTweet() {
+    this.image = tweet.getEntities().getMedia() != null && !tweet.getEntities().getMedia().isEmpty();
+  }
+
+  private void getIsRetweetFromTweet() {
+    this.retweet = tweet.getRetweetedStatus().isPresent();
+  }
+
+  private void getIsOfficialFromTweet() {
+    List<String> officialAccounts = Lists.newArrayList("MBTA", "MBTA_CR");
+    this.official = officialAccounts.contains(tweet.getUser().getScreenName());
+  }
+
   public Tweet getTweet() {
     return tweet;
   }
@@ -146,8 +186,8 @@ public class TweetDetails {
     return stationStrings;
   }
 
-  public String getVehicle() {
-    return vehicle;
+  public HashSet<String> getVehicles() {
+    return vehicles;
   }
 
   public Direction getDirection() {

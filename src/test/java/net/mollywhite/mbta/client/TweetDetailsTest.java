@@ -26,6 +26,11 @@ public class TweetDetailsTest {
     assertThat(tweetDetails.getLines()).isEmpty();
     assertThat(tweetDetails.getBranches()).isEmpty();
     assertThat(tweetDetails.getStations()).isEmpty();
+    assertThat(tweetDetails.getVehicles()).isEmpty();
+    assertThat(tweetDetails.getDirection()).isNull();
+    assertThat(tweetDetails.getImage()).isFalse();
+    assertThat(tweetDetails.getRetweet()).isFalse();
+    assertThat(tweetDetails.getOfficial()).isFalse();
   }
 
   @Test
@@ -34,6 +39,11 @@ public class TweetDetailsTest {
     final TweetDetails tweetDetails = new TweetDetails(tweet).get();
     assertThat(tweetDetails.getLines()).containsExactly(Line.ORANGE);
     assertThat(tweetDetails.getBranches()).isEmpty();
-    assertThat(tweetDetails.getStations()).containsExactly(Station.WELLINGTON, Station.OAKGROVE);
+    assertThat(tweetDetails.getStations()).containsOnly(Station.WELLINGTON, Station.OAKGROVE);
+    assertThat(tweetDetails.getVehicles()).isEmpty();
+    assertThat(tweetDetails.getDirection()).isNull();
+    assertThat(tweetDetails.getImage()).isFalse();
+    assertThat(tweetDetails.getRetweet()).isTrue();
+    assertThat(tweetDetails.getOfficial()).isFalse();
   }
 }

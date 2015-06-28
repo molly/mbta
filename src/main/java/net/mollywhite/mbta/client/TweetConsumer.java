@@ -63,21 +63,23 @@ public class TweetConsumer implements Runnable {
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
     Set<String> stations = tweetDetails.getStationsAsStrings();
+    Set<String> vehicles = tweetDetails.getVehicles();
     String[] lineArray = lines.toArray(new String[lines.size()]);
     String[] branchArray = branches.toArray(new String[branches.size()]);
     String[] stationArray = stations.toArray(new String[stations.size()]);
+    String[] vehicleArray = vehicles.toArray(new String[vehicles.size()]);
 
     tweetDAO.insert(mapper.writeValueAsString(tweet),
         Timestamp.from(tweet.getCreatedAt().toInstant()),
         connection.createArrayOf("varchar", lineArray),
         connection.createArrayOf("varchar", branchArray),
         connection.createArrayOf("varchar", stationArray),
-        null,
-        null,
-        false,
-        false,
-        false,
-        null);
+        connection.createArrayOf("varchar", vehicleArray),
+        tweetDetails.getDirection(),
+        tweetDetails.getImage(),
+        tweetDetails.getRetweet(),
+        tweetDetails.getOfficial(),
+        tweetDetails.getCategory());
   }
 
   public int count() {
