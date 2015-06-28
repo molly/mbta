@@ -80,6 +80,11 @@ public class TweetConsumer implements Runnable {
         tweetDetails.getRetweet(),
         tweetDetails.getOfficial(),
         tweetDetails.getCategory());
+
+    logger.debug("Inserted: ", tweet.getText(), tweet.getCreatedAt().toString(), tweetDetails.getLines().toString(),
+        tweetDetails.getBranches().toString(), tweetDetails.getStations().toString(),
+        tweetDetails.getVehicles().toString(), tweetDetails.getDirection().name(), tweetDetails.getImage().toString(),
+        tweetDetails.getRetweet().toString(), tweetDetails.getOfficial().toString(), tweetDetails.getCategory());
   }
 
   public int count() {
