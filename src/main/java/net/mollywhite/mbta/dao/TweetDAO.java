@@ -20,5 +20,8 @@ public interface TweetDAO {
   @SqlQuery("SELECT COUNT(*) FROM tweets")
   int count();
 
+  @SqlUpdate("TRUNCATE tweets")
+  void truncate();
+
   void close();
 }

@@ -2,7 +2,7 @@ database:
   driverClass: org.postgresql.Driver
   user: postgres
   password: doingthething
-  url: jdbc:postgresql:mbta
+  url: jdbc:postgresql:mbtatest
   properties:
     charSet: UTF-8
   maxWaitForConnection: 1s
