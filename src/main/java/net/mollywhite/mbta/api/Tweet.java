@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mollywhite.mbta.client.CreatedAtFormatter;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public class Tweet {
   private final Optional<String> inReplyToUserIdStr;
   private final Optional<String> inReplyToScreenName;
   private final User user;
-  private final Optional<List<Float>> coordinates;
+  private final Optional<Coordinates> coordinates;
   private final Optional<Place> place;
   private final Optional<Tweet> retweetedStatus;
   private final int retweetCount;
@@ -32,7 +31,7 @@ public class Tweet {
                @JsonProperty("in_reply_to_user_id_str") String inReplyToUserIdStr,
                @JsonProperty("in_reply_to_screen_name") String inReplyToScreenName,
                @JsonProperty("user") User user,
-               @JsonProperty("coordinates") List<Float> coordinates,
+               @JsonProperty("coordinates") Coordinates coordinates,
                @JsonProperty("place") Place place,
                @JsonProperty("retweeted_status") Tweet retweetedStatus,
                @JsonProperty("retweet_count") int retweetCount,
@@ -81,7 +80,7 @@ public class Tweet {
     return user;
   }
 
-  public Optional<List<Float>> getCoordinates() {
+  public Optional<Coordinates> getCoordinates() {
     return coordinates;
   }
 

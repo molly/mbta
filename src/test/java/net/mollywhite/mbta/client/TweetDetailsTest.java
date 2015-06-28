@@ -27,7 +27,7 @@ public class TweetDetailsTest {
     assertThat(tweetDetails.getBranches()).isEmpty();
     assertThat(tweetDetails.getStations()).isEmpty();
     assertThat(tweetDetails.getVehicles()).isEmpty();
-    assertThat(tweetDetails.getDirection()).isNull();
+    assertThat(tweetDetails.getDirection()).isEmpty();
     assertThat(tweetDetails.getImage()).isFalse();
     assertThat(tweetDetails.getRetweet()).isFalse();
     assertThat(tweetDetails.getOfficial()).isFalse();
@@ -41,7 +41,7 @@ public class TweetDetailsTest {
     assertThat(tweetDetails.getBranches()).isEmpty();
     assertThat(tweetDetails.getStations()).containsOnly(Station.WELLINGTON, Station.OAKGROVE);
     assertThat(tweetDetails.getVehicles()).isEmpty();
-    assertThat(tweetDetails.getDirection()).isNull();
+    assertThat(tweetDetails.getDirection()).isEmpty();
     assertThat(tweetDetails.getImage()).isFalse();
     assertThat(tweetDetails.getRetweet()).isTrue();
     assertThat(tweetDetails.getOfficial()).isFalse();

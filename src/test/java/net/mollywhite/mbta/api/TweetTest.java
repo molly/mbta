@@ -17,6 +17,7 @@ public class TweetTest {
   private final Tweet tweetWithReplyTo;
   private final Tweet retweet;
   private final Tweet tweetWithPlace;
+  private final Tweet tweetWithCoords;
 
   public TweetTest() {
     List<UserMention> users = new ArrayList<UserMention>();
@@ -133,6 +134,45 @@ public class TweetTest {
             Lists.newArrayList(new UserMention("150334831", Lists.newArrayList(0, 5), "MBTA", "MBTA"))
         )
     );
+
+    tweetWithCoords = new Tweet(
+        "Sun Jun 28 17:35:11 +0000 2015",
+        "615211856278499328",
+        "I'm at MBTA South Station - @mbtagm in Boston, MA https://t.co/MzyOOfgG1X",
+        null,
+        null,
+        null,
+        new User(
+            "21228022",
+            "Adriana Vega",
+            "a_vega",
+            "http://pbs.twimg.com/profile_images/427952686466863104/cw7ytowg_normal.jpeg",
+            "https://pbs.twimg.com/profile_images/427952686466863104/cw7ytowg_normal.jpeg"
+        ),
+        new Coordinates(Lists.newArrayList(new Float(-71.055161), new Float(42.352098))),
+        new Place(
+            "Boston, MA",
+            "Boston"
+        ),
+        null,
+        0,
+        0,
+        new Entities(
+            Collections.<Hashtag> emptyList(),
+            null,
+            Lists.newArrayList(new URL(
+                "swarmapp.com/c/gfDAFSJnU9i",
+                "https://www.swarmapp.com/c/gfDAFSJnU9i",
+                Lists.newArrayList(50, 73),
+                "https://t.co/MzyOOfgG1X")),
+            Lists.newArrayList(new UserMention(
+                "1875510546",
+                Lists.newArrayList(28, 35),
+                "mbtaGM",
+                "mbtaGM"
+            ))
+        )
+    );
   }
 
   @Test
@@ -169,5 +209,17 @@ public class TweetTest {
   public void tweetWithPlaceDeserializesFromJson() throws Exception {
     final Tweet actualPlace = mapper.readValue(fixture("fixtures/TweetWithPlaceFixture.json"), Tweet.class);
     assertThat(tweetWithPlace).isEqualTo(actualPlace);
+  }
+
+  @Test
+  public void tweetWithCoordsSerializesToJson() throws Exception {
+    final String expected = mapper.writeValueAsString(mapper.readValue(fixture("fixtures/TweetWithCoordsFixture.json"), Tweet.class));
+    assertThat(mapper.writeValueAsString(tweetWithCoords)).isEqualTo(expected);
+  }
+
+  @Test
+  public void tweetWithCoordsDeserializesFromJson() throws Exception {
+    final Tweet actualCoords = mapper.readValue(fixture("fixtures/TweetWithCoordsFixture.json"), Tweet.class);
+    assertThat(tweetWithCoords).isEqualTo(actualCoords);
   }
 }

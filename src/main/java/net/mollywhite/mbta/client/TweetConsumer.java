@@ -49,7 +49,7 @@ public class TweetConsumer implements Runnable {
           insertTweet(tweet);
         } catch (IOException | SQLException e)  {
           e.printStackTrace();
-          logger.error("Couldn't parse tweet: %s", tweetStr);
+          logger.error("Couldn't parse tweet: {}", tweetStr);
         }
       } catch (InterruptedException e) {
         logger.info("Shutting down Tweet consumer.");
