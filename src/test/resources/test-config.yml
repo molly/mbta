@@ -1,0 +1,22 @@
+database:
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: doingthething
+  url: jdbc:postgresql:mbta
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "/* Test database health check */ SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: EST
+      target: stdout

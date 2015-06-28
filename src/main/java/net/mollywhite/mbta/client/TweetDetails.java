@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -17,7 +18,7 @@ public class TweetDetails {
   private final String lowercaseTweetText;
   private Set<Line> lines;
   private Set<Branch> branches;
-  private Set<String> stations;
+  private Set<Station> stations;
   private String vehicle;
   private Direction direction;
   private Boolean image;
@@ -30,6 +31,12 @@ public class TweetDetails {
   public TweetDetails(Tweet tweet) {
     this.tweet = tweet;
     this.lowercaseTweetText = tweet.getText().toLowerCase();
+    this.lines = new HashSet<Line>();
+    this.branches = new HashSet<Branch>();
+    this.stations = new HashSet<Station>();
+    this.image =  false;
+    this.retweet = false;
+    this.official = false;
   }
 
   public TweetDetails get() {
@@ -88,7 +95,7 @@ public class TweetDetails {
         Set<Line> stationLines = station.getLines();
         Set<Branch> stationBranches = station.getBranches();
 
-        stations.add(station.name());
+        stations.add(station);
         if (!Collections.disjoint(lines, stationLines)) {
           logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet);
         }
@@ -113,12 +120,30 @@ public class TweetDetails {
     return lines;
   }
 
+  public Set<String> getLinesAsStrings() {
+    Set<String> lineStrings = new HashSet<String>();
+    lines.forEach(line -> lineStrings.add(line.name()));
+    return lineStrings;
+  }
+
   public Set<Branch> getBranches() {
     return branches;
   }
 
-  public Set<String> getStations() {
+  public Set<String> getBranchesAsStrings() {
+    Set<String> branchStrings = new HashSet<String>();
+    branches.forEach(branch -> branchStrings.add(branch.name()));
+    return branchStrings;
+  }
+
+  public Set<Station> getStations() {
     return stations;
+  }
+
+  public Set<String> getStationsAsStrings() {
+    Set<String> stationStrings = new HashSet<String>();
+    stations.forEach(station -> stationStrings.add(station.name()));
+    return stationStrings;
   }
 
   public String getVehicle() {
