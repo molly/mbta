@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ public class TweetDetails {
   private Set<Branch> branches;
   private Set<Station> stations;
   private HashSet<String> vehicles;
-  private Direction direction;
+  private Optional<Direction> direction;
   private Boolean image;
   private Boolean retweet;
   private Boolean official;
@@ -38,7 +39,7 @@ public class TweetDetails {
     this.branches = new HashSet<Branch>();
     this.stations = new HashSet<Station>();
     this.vehicles = new HashSet<String>();
-    this.direction = null;
+    this.direction = Optional.empty();
     this.image =  false;
     this.retweet = false;
     this.official = false;
@@ -130,9 +131,9 @@ public class TweetDetails {
     if (this.lowercaseTweetText.contains("inbound") && this.lowercaseTweetText.contains("outbound")) {
       return;
     } else if (this.lowercaseTweetText.contains("inbound")) {
-      this.direction = Direction.INBOUND;
+      this.direction = Optional.of(Direction.INBOUND);
     } else if (this.lowercaseTweetText.contains("outbound")) {
-      this.direction = Direction.OUTBOUND;
+      this.direction = Optional.of(Direction.OUTBOUND);
     }
   }
 
@@ -191,7 +192,7 @@ public class TweetDetails {
     return vehicles;
   }
 
-  public Direction getDirection() {
+  public Optional<Direction> getDirection() {
     return direction;
   }
 

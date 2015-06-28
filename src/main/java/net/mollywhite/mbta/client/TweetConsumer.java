@@ -75,16 +75,18 @@ public class TweetConsumer implements Runnable {
         connection.createArrayOf("varchar", branchArray),
         connection.createArrayOf("varchar", stationArray),
         connection.createArrayOf("varchar", vehicleArray),
-        tweetDetails.getDirection(),
+        tweetDetails.getDirection().orElse(null),
         tweetDetails.getImage(),
         tweetDetails.getRetweet(),
         tweetDetails.getOfficial(),
         tweetDetails.getCategory());
 
-    logger.debug("Inserted: ", tweet.getText(), tweet.getCreatedAt().toString(), tweetDetails.getLines().toString(),
-        tweetDetails.getBranches().toString(), tweetDetails.getStations().toString(),
-        tweetDetails.getVehicles().toString(), tweetDetails.getDirection().name(), tweetDetails.getImage().toString(),
-        tweetDetails.getRetweet().toString(), tweetDetails.getOfficial().toString(), tweetDetails.getCategory());
+    logger.info("Inserted: {}\n{}\nLines: {}\tBranches:{}\tStations: {}\tVehicles: {}\tDirection: {}\nImage: {}\t" +
+            "Retweet: {}\tOfficial: {}\tCategory: {}", tweet.getText(), tweet.getCreatedAt().toString(),
+        tweetDetails.getLines().toString(), tweetDetails.getBranches().toString(), tweetDetails.getStations().toString(),
+        tweetDetails.getVehicles().toString(), tweetDetails.getDirection().map(direction -> direction.name()).orElse(""),
+        tweetDetails.getImage().toString(), tweetDetails.getRetweet().toString(), tweetDetails.getOfficial().toString(),
+        tweetDetails.getCategory());
   }
 
   public int count() {
