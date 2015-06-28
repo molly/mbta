@@ -44,7 +44,7 @@ public enum Station {
   ASSEMBLY ("Assembly", Pattern.compile("assembly"), Sets.newHashSet(Line.ORANGE), Collections.<Branch>emptySet()),
   SULLIVANSQ ("Sullivan Square", Pattern.compile("sullivan"), Sets.newHashSet(Line.ORANGE), Collections.<Branch>emptySet()),
   COMMUNITYCOLLEGE ("Community College", Pattern.compile("comm(unity)?\\.? college"), Sets.newHashSet(Line.ORANGE), Collections.<Branch>emptySet()),
-  NORTHSTATION ("North Station", Pattern.compile("n(orth|o\\.?|\\.)? st"), Sets.newHashSet(Line.ORANGE, Line.GREEN), Sets.newHashSet(Branch.C, Branch.E)),
+  NORTHSTATION ("North Station", Pattern.compile("([^\\w]|\\A)n(orth|o\\.?|\\.)? st"), Sets.newHashSet(Line.ORANGE, Line.GREEN), Sets.newHashSet(Branch.C, Branch.E)),
   HAYMARKET ("Haymarket", Pattern.compile("haymarket"), Sets.newHashSet(Line.ORANGE, Line.GREEN), Sets.newHashSet(Branch.C, Branch.E)),
   STATE ("State", Pattern.compile("([^\\w]|\\A)state([^\\w]|\\z)"), Sets.newHashSet(Line.ORANGE, Line.BLUE), Collections.<Branch>emptySet()),
   CHINATOWN ("Chinatown", Pattern.compile("chinatown"), Sets.newHashSet(Line.ORANGE), Collections.<Branch>emptySet()),

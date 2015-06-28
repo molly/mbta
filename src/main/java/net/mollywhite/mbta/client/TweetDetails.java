@@ -47,34 +47,34 @@ public class TweetDetails {
   }
 
   private void getLinesFromTweet() {
-    if (Pattern.matches("[^\\w]red(line|[^\\w])", lowercaseTweetText)) {
+    if (Pattern.compile("([^\\w]|\\A)red(line|[^\\w]|\\z)").matcher(lowercaseTweetText).find()) {
       this.lines.add(Line.RED);
     }
-    if (Pattern.matches("[^\\w]orange(line|[^\\w])", lowercaseTweetText)) {
+    if (Pattern.compile("([^\\w]|\\A)orange(line|[^\\w]|\\z)").matcher(lowercaseTweetText).find()) {
       this.lines.add(Line.ORANGE);
     }
-    if (Pattern.matches("[^\\w]blue(line|[^\\w])", lowercaseTweetText)) {
+    if (Pattern.compile("([^\\w]|\\A)blue(line|[^\\w]|\\z)").matcher(lowercaseTweetText).find()) {
       this.lines.add(Line.BLUE);
     }
-    if (Pattern.matches("[^\\w]green(line|[^\\w])(?! st)", lowercaseTweetText)) {
+    if (Pattern.compile("([^\\w]|\\A)green(line|[^\\w]|\\z)(?! st)").matcher(lowercaseTweetText).find()) {
       this.lines.add(Line.GREEN);
     }
   }
 
   private void getBranchesFromTweet() {
-    if (this.lowercaseTweetText.contains("[^\\w]b[^\\w]")) {
+    if (this.lowercaseTweetText.contains("([^\\w]|\\A)b([^\\w]|\\z)")) {
       this.branches.add(Branch.B);
       this.lines.add(Line.GREEN);
     }
-    if (this.lowercaseTweetText.contains("[^\\w]c[^\\w]")) {
+    if (this.lowercaseTweetText.contains("([^\\w]|\\A)c([^\\w]|\\z)")) {
       this.branches.add(Branch.C);
       this.lines.add(Line.GREEN);
     }
-    if (this.lowercaseTweetText.contains("[^\\w]d[^\\w]")) {
+    if (this.lowercaseTweetText.contains("([^\\w]|\\A)d([^\\w]|\\z)")) {
       this.branches.add(Branch.D);
       this.lines.add(Line.GREEN);
     }
-    if (this.lowercaseTweetText.contains("[^\\w]e[^\\w]")) {
+    if (this.lowercaseTweetText.contains("([^\\w]|\\A)e([^\\w]|\\z)")) {
       this.branches.add(Branch.E);
       this.lines.add(Line.GREEN);
     }
