@@ -100,18 +100,19 @@ public class TweetDetails {
   }
 
   private void getStationsFromTweet() {
+    // TODO: This could be a lot more accurate
     for (Station station : Station.values()) {
       if (station.inTweet(this.lowercaseTweetText)) {
         Set<Line> stationLines = station.getLines();
         Set<Branch> stationBranches = station.getBranches();
 
         stations.add(station);
-        if (!Collections.disjoint(lines, stationLines)) {
-          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet);
+        if (Collections.disjoint(lines, stationLines)) {
+          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. New: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet.getText());
         }
         lines.addAll(stationLines);
-        if (!Collections.disjoint(branches, stationBranches)) {
-          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. Station: {}. Tweet: {}.", lines.toString(), stationBranches.toString(), this.tweet);
+        if (Collections.disjoint(branches, stationBranches)) {
+          logger.info("Mismatch between recorded branches and station branches. Recorded: {}. New: {}. Tweet: {}.", lines.toString(), stationBranches.toString(), this.tweet.getText());
         }
         branches.addAll(station.getBranches());
       }
