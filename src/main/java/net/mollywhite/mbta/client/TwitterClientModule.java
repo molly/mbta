@@ -10,6 +10,7 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Environment;
 import net.mollywhite.mbta.MbtaConfiguration;
+import net.mollywhite.mbta.dao.TweetDAO;
 import org.skife.jdbi.v2.DBI;
 
 import java.io.IOException;
@@ -46,6 +47,14 @@ public class TwitterClientModule extends AbstractModule {
   DBI providesDBI(MbtaConfiguration configuration, Environment environment) {
     final DBIFactory factory = new DBIFactory();
     return factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+  }
+
+  @Inject
+  @Provides
+  TweetDAO providesTweetDao(MbtaConfiguration configuration, Environment environment) {
+    final DBIFactory factory = new DBIFactory();
+    DBI dbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+    return dbi.onDemand(TweetDAO.class);
   }
 
   @Inject

@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
-import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.dao.TweetDAO;
-import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +13,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
@@ -30,10 +25,10 @@ public class TweetConsumer implements Runnable {
   final Logger logger = LoggerFactory.getLogger(TweetConsumer.class);
 
   @Inject
-  TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, DBI dbi, Connection connection) {
+  TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, TweetDAO tweetDAO, Connection connection) {
     this.twitterClient = twitterClient;
     this.mapper = mapper;
-    this.tweetDAO = dbi.onDemand(TweetDAO.class);
+    this.tweetDAO = tweetDAO;
     this.connection = connection;
   }
 
@@ -91,12 +86,5 @@ public class TweetConsumer implements Runnable {
 
   public int count() {
     return tweetDAO.count();
-  }
-
-  private Optional<List<Branch>> getBranches(Tweet tweet) {
-    String lowercaseTweetText = tweet.getText().toLowerCase();
-    List<Branch> branches = new ArrayList<Branch>();
-//    if (lowercaseTweetText.contains("red")) {
-    return Optional.empty();
   }
 }

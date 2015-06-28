@@ -37,8 +37,8 @@ public class TweetConsumerTest {
     mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
-    tweetConsumer = new TweetConsumer(twitterClient, mapper, dbi, connection);
     tweetDAO = dbi.onDemand(TweetDAO.class);
+    tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection);
     tweetDAO.truncate();
   }
 
