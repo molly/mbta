@@ -65,7 +65,7 @@ public class TweetConsumer implements Runnable {
     String[] vehicleArray = vehicles.toArray(new String[vehicles.size()]);
 
     tweetDAO.insert(mapper.writeValueAsString(tweet),
-        Timestamp.from(tweet.getCreatedAt().toInstant()),
+        Timestamp.from(tweet.getCreatedAtDateTime().toInstant()),
         connection.createArrayOf("varchar", lineArray),
         connection.createArrayOf("varchar", branchArray),
         connection.createArrayOf("varchar", stationArray),

@@ -1,6 +1,7 @@
 package net.mollywhite.mbta.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mollywhite.mbta.client.CreatedAtFormatter;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class Tweet {
-  private final OffsetDateTime createdAt;
+  private final String createdAt;
   private final String idStr;
   private final String text;
   private final Optional<String> inReplyToStatusIdStr;
@@ -37,7 +38,7 @@ public class Tweet {
                @JsonProperty("retweet_count") int retweetCount,
                @JsonProperty("favorite_count") int favoriteCount,
                @JsonProperty("entities") Entities entities) {
-    this.createdAt = CreatedAtFormatter.get(createdAt);
+    this.createdAt = createdAt;
     this.idStr = idStr;
     this.text = text;
     this.inReplyToStatusIdStr = Optional.ofNullable(inReplyToStatusIdStr);
@@ -52,8 +53,13 @@ public class Tweet {
     this.entities = entities;
   }
 
-  public OffsetDateTime getCreatedAt() {
+  public String getCreatedAt() {
     return createdAt;
+  }
+
+  @JsonIgnore
+  public OffsetDateTime getCreatedAtDateTime() {
+    return CreatedAtFormatter.get(createdAt);
   }
 
   public String getIdStr() {
