@@ -3,6 +3,7 @@ package net.mollywhite.mbta.dao;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
+import net.mollywhite.mbta.api.Station;
 import net.mollywhite.mbta.client.TweetDetails;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
@@ -35,6 +36,10 @@ public interface TweetDAO {
   @SqlQuery("SELECT * FROM tweets WHERE :branch = ANY (branch)")
   @Mapper(TweetDetailsMapper.class)
   List<TweetDetails> getTweetsByBranch(@Bind("branch") Branch branch);
+
+  @SqlQuery("SELECT * FROM tweets WHERE :station = ANY (station)")
+  @Mapper(TweetDetailsMapper.class)
+  List<TweetDetails> getTweetsByStation(@Bind("station") Station station);
 
   void close();
 }
