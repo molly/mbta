@@ -86,6 +86,7 @@ public class LineResourceTest {
   }
 
   private void insertTweetDetails(TweetDetails tweetDetails) throws JsonProcessingException, SQLException {
+    Tweet tweet = tweetDetails.getTweet();
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
     Set<String> stations = tweetDetails.getStationsAsStrings();

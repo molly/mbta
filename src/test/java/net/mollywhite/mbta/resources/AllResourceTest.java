@@ -9,7 +9,6 @@ import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
-import net.mollywhite.mbta.api.Station;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
@@ -19,7 +18,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.skife.jdbi.v2.DBI;
 
-import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,11 +28,13 @@ import java.util.Set;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StationResourceTest {
+public class AllResourceTest {
   private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-  private StationResource resource;
-  private Tweet tweet;
-  private TweetDetails tweetDetails;
+  private AllResource resource;
+  private Tweet retweet;
+  private Tweet ashmontTweet;
+  private TweetDetails retweetDetails;
+  private TweetDetails ashmontTweetDetails;
   private TweetDAO tweetDAO;
   private Connection connection;
 
@@ -49,9 +49,11 @@ public class StationResourceTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
-    tweet = mapper.readValue(fixture("fixtures/TweetWithCoordsFixture.json"), Tweet.class);
-    tweetDetails = new TweetDetails(tweet);
-    resource = new StationResource(tweetDAO);
+    retweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    ashmontTweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
+    retweetDetails = new TweetDetails(retweet);
+    ashmontTweetDetails = new TweetDetails(ashmontTweet);
+    resource = new AllResource(tweetDAO);
     tweetDAO.truncate();
   }
 
@@ -61,27 +63,12 @@ public class StationResourceTest {
   }
 
   @Test
-  public void testGetTweetsByStation() throws Exception {
-    insertTweetDetails(tweetDetails);
-    Response southStationTweets = resource.getTweetsByStation("southstation");
-    List<TweetDetails> response = (List<TweetDetails>) southStationTweets.getEntity();
-    assertThat(southStationTweets.getStatus()).isEqualTo(200);
-    assertThat(response).hasSize(1);
-    assertThat(response.get(0).getStations()).containsOnly(Station.SOUTHSTATION);
-  }
-
-  @Test
-  public void testGetTweetsByStationEmpty() throws Exception {
-    Response alewifeStationTweets = resource.getTweetsByStation("ALEWIFE");
-    List<TweetDetails> response = (List<TweetDetails>) alewifeStationTweets.getEntity();
-    assertThat(alewifeStationTweets.getStatus()).isEqualTo(200);
-    assertThat(response).hasSize(0);
-  }
-
-  @Test
-  public void testGetTweetsByStationNonexistent() throws Exception {
-    Response stationTweets = resource.getTweetsByStation("foo");
-    assertThat(stationTweets.getStatus()).isEqualTo(404);
+  public void testGetTweets() throws Exception {
+    // Retweet fixture is on the orange line
+    insertTweetDetails(retweetDetails);
+    insertTweetDetails(ashmontTweetDetails);
+    List<TweetDetails> response = resource.get();
+    assertThat(response).hasSize(2);
   }
 
   private void insertTweetDetails(TweetDetails tweetDetails) throws JsonProcessingException, SQLException {

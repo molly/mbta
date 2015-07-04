@@ -8,12 +8,13 @@ import net.mollywhite.mbta.client.TweetDetails;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
-import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
+import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.List;
 
+@RegisterMapper(TweetDetailsMapper.class)
 public interface TweetDAO {
   @SqlUpdate("INSERT INTO tweets (tweet, time, line, branch, station, vehicle, direction, image, retweet, official, category)" +
       " VALUES (:tweet, :time, :line, :branch, :station, :vehicle, :direction, :image, :retweet, :official, :category)")
@@ -30,16 +31,16 @@ public interface TweetDAO {
   int count();
 
   @SqlQuery("SELECT * FROM tweets WHERE :line = ANY (line)")
-  @Mapper(TweetDetailsMapper.class)
   List<TweetDetails> getTweetsByLine(@Bind("line") Line line);
 
   @SqlQuery("SELECT * FROM tweets WHERE :branch = ANY (branch)")
-  @Mapper(TweetDetailsMapper.class)
   List<TweetDetails> getTweetsByBranch(@Bind("branch") Branch branch);
 
   @SqlQuery("SELECT * FROM tweets WHERE :station = ANY (station)")
-  @Mapper(TweetDetailsMapper.class)
   List<TweetDetails> getTweetsByStation(@Bind("station") Station station);
+
+  @SqlQuery("SELECT * FROM tweets")
+  List<TweetDetails> getAllTweets();
 
   void close();
 }
