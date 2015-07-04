@@ -2,10 +2,11 @@ package net.mollywhite.mbta.dao;
 
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
-import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.client.TweetDetails;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.customizers.Mapper;
 
 import java.sql.Array;
 import java.sql.Timestamp;
@@ -27,7 +28,8 @@ public interface TweetDAO {
   int count();
 
   @SqlQuery("SELECT * FROM tweets WHERE :line = ANY (line)")
-  List<Tweet> getTweetsByLine(@Bind("line") Line line);
+  @Mapper(TweetDetailsMapper.class)
+  List<TweetDetails> getTweetsByLine(@Bind("line") Line line);
 
   void close();
 }

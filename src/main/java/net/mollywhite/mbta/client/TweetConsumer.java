@@ -54,7 +54,7 @@ public class TweetConsumer implements Runnable {
 
   @VisibleForTesting
   void insertTweet(Tweet tweet) throws JsonProcessingException, SQLException {
-    TweetDetails tweetDetails = new TweetDetails(tweet).get();
+    TweetDetails tweetDetails = new TweetDetails(tweet);
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
     Set<String> stations = tweetDetails.getStationsAsStrings();
@@ -70,7 +70,7 @@ public class TweetConsumer implements Runnable {
         connection.createArrayOf("varchar", branchArray),
         connection.createArrayOf("varchar", stationArray),
         connection.createArrayOf("varchar", vehicleArray),
-        tweetDetails.getDirection().orElse(null),
+        tweetDetails.getDirection(),
         tweetDetails.getImage(),
         tweetDetails.getRetweet(),
         tweetDetails.getOfficial(),
@@ -79,7 +79,7 @@ public class TweetConsumer implements Runnable {
     logger.info("Inserted: {}\n{}\nLines: {}\tBranches:{}\tStations: {}\tVehicles: {}\tDirection: {}\nImage: {}\t" +
             "Retweet: {}\tOfficial: {}\tCategory: {}", tweet.getText(), tweet.getCreatedAt().toString(),
         tweetDetails.getLines().toString(), tweetDetails.getBranches().toString(), tweetDetails.getStations().toString(),
-        tweetDetails.getVehicles().toString(), tweetDetails.getDirection().map(direction -> direction.name()).orElse(""),
+        tweetDetails.getVehicles().toString(), tweetDetails.getDirection() != null ? tweetDetails.getDirection().name() : null,
         tweetDetails.getImage().toString(), tweetDetails.getRetweet().toString(), tweetDetails.getOfficial().toString(),
         tweetDetails.getCategory());
   }

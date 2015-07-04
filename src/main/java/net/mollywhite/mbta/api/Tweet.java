@@ -7,19 +7,18 @@ import net.mollywhite.mbta.client.CreatedAtFormatter;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Tweet {
   private final String createdAt;
   private final String idStr;
   private final String text;
-  private final Optional<String> inReplyToStatusIdStr;
-  private final Optional<String> inReplyToUserIdStr;
-  private final Optional<String> inReplyToScreenName;
+  private final String inReplyToStatusIdStr;
+  private final String inReplyToUserIdStr;
+  private final String inReplyToScreenName;
   private final User user;
-  private final Optional<Coordinates> coordinates;
-  private final Optional<Place> place;
-  private final Optional<Tweet> retweetedStatus;
+  private final Coordinates coordinates;
+  private final Place place;
+  private final Tweet retweetedStatus;
   private final int retweetCount;
   private final int favoriteCount;
   private final Entities entities;
@@ -41,13 +40,13 @@ public class Tweet {
     this.createdAt = createdAt;
     this.idStr = idStr;
     this.text = text;
-    this.inReplyToStatusIdStr = Optional.ofNullable(inReplyToStatusIdStr);
-    this.inReplyToUserIdStr = Optional.ofNullable(inReplyToUserIdStr);
-    this.inReplyToScreenName = Optional.ofNullable(inReplyToScreenName);
+    this.inReplyToStatusIdStr = inReplyToStatusIdStr;
+    this.inReplyToUserIdStr = inReplyToUserIdStr;
+    this.inReplyToScreenName = inReplyToScreenName;
     this.user = user;
-    this.coordinates = Optional.ofNullable(coordinates);
-    this.place = Optional.ofNullable(place);
-    this.retweetedStatus = Optional.ofNullable(retweetedStatus);
+    this.coordinates = coordinates;
+    this.place = place;
+    this.retweetedStatus = retweetedStatus;
     this.retweetCount = retweetCount;
     this.favoriteCount = favoriteCount;
     this.entities = entities;
@@ -70,15 +69,15 @@ public class Tweet {
     return text;
   }
 
-  public Optional<String> getInReplyToStatusIdStr() {
+  public String getInReplyToStatusIdStr() {
     return inReplyToStatusIdStr;
   }
 
-  public Optional<String> getInReplyToUserIdStr() {
+  public String getInReplyToUserIdStr() {
     return inReplyToUserIdStr;
   }
 
-  public Optional<String> getInReplyToScreenName() {
+  public String getInReplyToScreenName() {
     return inReplyToScreenName;
   }
 
@@ -86,15 +85,15 @@ public class Tweet {
     return user;
   }
 
-  public Optional<Coordinates> getCoordinates() {
+  public Coordinates getCoordinates() {
     return coordinates;
   }
 
-  public Optional<Place> getPlace() {
+  public Place getPlace() {
     return place;
   }
 
-  public Optional<Tweet> getRetweetedStatus() {
+  public Tweet getRetweetedStatus() {
     return retweetedStatus;
   }
 

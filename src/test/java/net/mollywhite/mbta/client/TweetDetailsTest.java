@@ -22,12 +22,12 @@ public class TweetDetailsTest {
   @Test
   public void testGetReplyTo() throws Exception {
     final Tweet tweet = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
-    final TweetDetails tweetDetails = new TweetDetails(tweet).get();
+    final TweetDetails tweetDetails = new TweetDetails(tweet);
     assertThat(tweetDetails.getLines()).isEmpty();
     assertThat(tweetDetails.getBranches()).isEmpty();
     assertThat(tweetDetails.getStations()).isEmpty();
     assertThat(tweetDetails.getVehicles()).isEmpty();
-    assertThat(tweetDetails.getDirection()).isEmpty();
+    assertThat(tweetDetails.getDirection()).isNull();
     assertThat(tweetDetails.getImage()).isFalse();
     assertThat(tweetDetails.getRetweet()).isFalse();
     assertThat(tweetDetails.getOfficial()).isFalse();
@@ -36,12 +36,12 @@ public class TweetDetailsTest {
   @Test
   public void testRetweet() throws Exception {
     final Tweet tweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
-    final TweetDetails tweetDetails = new TweetDetails(tweet).get();
+    final TweetDetails tweetDetails = new TweetDetails(tweet);
     assertThat(tweetDetails.getLines()).containsExactly(Line.ORANGE);
     assertThat(tweetDetails.getBranches()).isEmpty();
     assertThat(tweetDetails.getStations()).containsOnly(Station.WELLINGTON, Station.OAKGROVE);
     assertThat(tweetDetails.getVehicles()).isEmpty();
-    assertThat(tweetDetails.getDirection()).isEmpty();
+    assertThat(tweetDetails.getDirection()).isNull();
     assertThat(tweetDetails.getImage()).isFalse();
     assertThat(tweetDetails.getRetweet()).isTrue();
     assertThat(tweetDetails.getOfficial()).isFalse();

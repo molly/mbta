@@ -1,5 +1,6 @@
 package net.mollywhite.mbta.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
@@ -9,22 +10,22 @@ import net.mollywhite.mbta.api.Tweet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TweetDetails {
   private final Tweet tweet;
-  private final String lowercaseTweetText;
+  private String lowercaseTweetText;
   private Set<Line> lines;
   private Set<Branch> branches;
   private Set<Station> stations;
-  private HashSet<String> vehicles;
-  private Optional<Direction> direction;
+  private Set<String> vehicles;
+  private Direction direction;
   private Boolean image;
   private Boolean retweet;
   private Boolean official;
@@ -39,13 +40,29 @@ public class TweetDetails {
     this.branches = new HashSet<Branch>();
     this.stations = new HashSet<Station>();
     this.vehicles = new HashSet<String>();
-    this.direction = Optional.empty();
+    this.direction = null;
     this.image =  false;
     this.retweet = false;
     this.official = false;
+    this.category = null;
+    this.get();
   }
 
-  public TweetDetails get() {
+  public TweetDetails(Tweet tweet, Set<Line> lines, Set<Branch> branches, Set<Station> stations, Set<String> vehicles, Direction direction, Boolean image, Boolean retweet, Boolean official, String category) {
+    this.tweet = tweet;
+    this.lowercaseTweetText = tweet.getText().toLowerCase();
+    this.lines = lines;
+    this.branches = branches;
+    this.stations = stations;
+    this.vehicles = vehicles;
+    this.direction = direction;
+    this.image = image;
+    this.retweet = retweet;
+    this.official = official;
+    this.category = category;
+  }
+
+  public void get() {
     getLinesFromTweet();
     getBranchesFromTweet();
     getStationsFromTweet();
@@ -54,7 +71,6 @@ public class TweetDetails {
     getHasImageFromTweet();
     getIsRetweetFromTweet();
     getIsOfficialFromTweet();
-    return this;
   }
 
   private void getLinesFromTweet() {
@@ -131,9 +147,9 @@ public class TweetDetails {
     if (this.lowercaseTweetText.contains("inbound") && this.lowercaseTweetText.contains("outbound")) {
       return;
     } else if (this.lowercaseTweetText.contains("inbound")) {
-      this.direction = Optional.of(Direction.INBOUND);
+      this.direction = Direction.INBOUND;
     } else if (this.lowercaseTweetText.contains("outbound")) {
-      this.direction = Optional.of(Direction.OUTBOUND);
+      this.direction = Direction.OUTBOUND;
     }
   }
 
@@ -142,7 +158,7 @@ public class TweetDetails {
   }
 
   private void getIsRetweetFromTweet() {
-    this.retweet = tweet.getRetweetedStatus().isPresent();
+    this.retweet = tweet.getRetweetedStatus() != null;
   }
 
   private void getIsOfficialFromTweet() {
@@ -154,14 +170,20 @@ public class TweetDetails {
     return tweet;
   }
 
+  @JsonIgnore
   public String getLowercaseTweetText() {
     return lowercaseTweetText;
+  }
+
+  public Timestamp getCreatedAtAsTimestamp() {
+    return Timestamp.from(tweet.getCreatedAtDateTime().toInstant());
   }
 
   public Set<Line> getLines() {
     return lines;
   }
 
+  @JsonIgnore
   public Set<String> getLinesAsStrings() {
     Set<String> lineStrings = new HashSet<String>();
     lines.forEach(line -> lineStrings.add(line.name()));
@@ -172,6 +194,7 @@ public class TweetDetails {
     return branches;
   }
 
+  @JsonIgnore
   public Set<String> getBranchesAsStrings() {
     Set<String> branchStrings = new HashSet<String>();
     branches.forEach(branch -> branchStrings.add(branch.name()));
@@ -182,17 +205,18 @@ public class TweetDetails {
     return stations;
   }
 
+  @JsonIgnore
   public Set<String> getStationsAsStrings() {
     Set<String> stationStrings = new HashSet<String>();
     stations.forEach(station -> stationStrings.add(station.name()));
     return stationStrings;
   }
 
-  public HashSet<String> getVehicles() {
+  public Set<String> getVehicles() {
     return vehicles;
   }
 
-  public Optional<Direction> getDirection() {
+  public Direction getDirection() {
     return direction;
   }
 
