@@ -9,7 +9,7 @@ import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
-import net.mollywhite.mbta.api.Line;
+import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
@@ -30,9 +30,9 @@ import java.util.Set;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LineResourceTest {
+public class BranchResourceTest {
   private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-  private LineResource resource;
+  private BranchResource resource;
   private Tweet tweet;
   private TweetDetails tweetDetails;
   private TweetDAO tweetDAO;
@@ -49,9 +49,9 @@ public class LineResourceTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
-    tweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    tweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
     tweetDetails = new TweetDetails(tweet);
-    resource = new LineResource(tweetDAO);
+    resource = new BranchResource(tweetDAO);
     tweetDAO.truncate();
   }
 
@@ -61,28 +61,27 @@ public class LineResourceTest {
   }
 
   @Test
-  public void testGetTweetsByLine() throws Exception {
-    // Retweet fixture is on the orange line
+  public void testGetTweetsByBranch() throws Exception {
     insertTweetDetails(tweetDetails);
-    Response orangeLineTweets = resource.getTweetsByLine("orange");
-    List<TweetDetails> response = (List<TweetDetails>) orangeLineTweets.getEntity();
-    assertThat(orangeLineTweets.getStatus()).isEqualTo(200);
+    Response ashmontBranchTweets = resource.getTweetsByBranch("ashmont");
+    List<TweetDetails> response = (List<TweetDetails>) ashmontBranchTweets.getEntity();
+    assertThat(ashmontBranchTweets.getStatus()).isEqualTo(200);
     assertThat(response).hasSize(1);
-    assertThat(response.get(0).getLines()).containsOnly(Line.ORANGE);
+    assertThat(response.get(0).getBranches()).containsOnly(Branch.ASHMONT);
   }
 
   @Test
-  public void testGetTweetsByLineEmpty() throws Exception {
-    Response redLineTweets = resource.getTweetsByLine("red");
-    List<TweetDetails> response = (List<TweetDetails>) redLineTweets.getEntity();
-    assertThat(redLineTweets.getStatus()).isEqualTo(200);
+  public void testGetTweetsByBranchEmpty() throws Exception {
+    Response bBranchTweets = resource.getTweetsByBranch("b");
+    List<TweetDetails> response = (List<TweetDetails>) bBranchTweets.getEntity();
+    assertThat(bBranchTweets.getStatus()).isEqualTo(200);
     assertThat(response).hasSize(0);
   }
 
   @Test
-  public void testGetTweetsByLineNonexistent() throws Exception {
-    Response lineTweets = resource.getTweetsByLine("foo");
-    assertThat(lineTweets.getStatus()).isEqualTo(404);
+  public void testGetTweetsByBranchNonexistent() throws Exception {
+    Response branchTweets = resource.getTweetsByBranch("foo");
+    assertThat(branchTweets.getStatus()).isEqualTo(404);
   }
 
   private void insertTweetDetails(TweetDetails tweetDetails) throws JsonProcessingException, SQLException {

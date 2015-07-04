@@ -13,6 +13,7 @@ import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.client.TwitterClient;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -48,6 +49,11 @@ public class TweetDAOTest {
     tweetDAO = dbi.onDemand(TweetDAO.class);
     tweet = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
     tweetDAO.truncate();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    connection.close();
   }
 
   @Test

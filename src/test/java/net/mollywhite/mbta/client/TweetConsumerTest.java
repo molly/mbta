@@ -10,6 +10,7 @@ import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.dao.TweetDAO;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class TweetConsumerTest {
   private TweetConsumer tweetConsumer;
   private ObjectMapper mapper;
   private TweetDAO tweetDAO;
+  private Connection connection;
 
   @ClassRule
   public static final DropwizardAppRule<MbtaConfiguration> RULE= new DropwizardAppRule<MbtaConfiguration>(MbtaApplication.class, ResourceHelpers.resourceFilePath("test-config.yml"));
@@ -32,7 +34,7 @@ public class TweetConsumerTest {
   @Before
   public void setUp() throws Exception {
     DataSourceFactory dsf = RULE.getConfiguration().getDataSourceFactory();
-    Connection connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
+    connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     TwitterClient twitterClient = new TwitterClient();
     mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final DBIFactory factory = new DBIFactory();
@@ -40,6 +42,11 @@ public class TweetConsumerTest {
     tweetDAO = dbi.onDemand(TweetDAO.class);
     tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection);
     tweetDAO.truncate();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    connection.close();
   }
 
   @Test

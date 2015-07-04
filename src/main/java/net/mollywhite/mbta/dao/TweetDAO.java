@@ -1,5 +1,6 @@
 package net.mollywhite.mbta.dao;
 
+import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.client.TweetDetails;
@@ -30,6 +31,10 @@ public interface TweetDAO {
   @SqlQuery("SELECT * FROM tweets WHERE :line = ANY (line)")
   @Mapper(TweetDetailsMapper.class)
   List<TweetDetails> getTweetsByLine(@Bind("line") Line line);
+
+  @SqlQuery("SELECT * FROM tweets WHERE :branch = ANY (branch)")
+  @Mapper(TweetDetailsMapper.class)
+  List<TweetDetails> getTweetsByBranch(@Bind("branch") Branch branch);
 
   void close();
 }

@@ -39,6 +39,7 @@ public class TweetConsumer implements Runnable {
       String tweetStr = null;
       try {
         tweetStr = messageQueue.take();
+        System.out.println(tweetStr);
         try {
           Tweet tweet = mapper.readValue(tweetStr, Tweet.class);
           insertTweet(tweet);
