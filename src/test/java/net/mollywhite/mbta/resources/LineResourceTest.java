@@ -65,6 +65,20 @@ public class LineResourceTest {
     assertThat(response.get(0).getLines()).containsOnly(Line.ORANGE);
   }
 
+  @Test
+  public void testGetTweetsByLineEmpty() throws Exception {
+    Response redLineTweets = resource.getTweetsByLine("red");
+    List<TweetDetails> response = (List<TweetDetails>) redLineTweets.getEntity();
+    assertThat(redLineTweets.getStatus()).isEqualTo(200);
+    assertThat(response).hasSize(0);
+  }
+
+  @Test
+  public void testGetTweetsByLineNonexistent() throws Exception {
+    Response redLineTweets = resource.getTweetsByLine("foo");
+    assertThat(redLineTweets.getStatus()).isEqualTo(404);
+  }
+
   private void insertTweetDetails(TweetDetails tweetDetails) throws JsonProcessingException, SQLException {
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
