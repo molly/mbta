@@ -2,11 +2,13 @@ package net.mollywhite.mbta.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Station;
 import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.api.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TweetDetails {
-  private final Tweet tweet;
+  private MbtaClient mbtaClient;
+  private Tweet tweet;
   private String lowercaseTweetText;
   private Set<Line> lines;
   private Set<Branch> branches;
@@ -33,9 +36,9 @@ public class TweetDetails {
 
   private static Logger logger = LoggerFactory.getLogger(TweetDetails.class);
 
-  public TweetDetails(Tweet tweet) {
-    this.tweet = tweet;
-    this.lowercaseTweetText = tweet.getText().toLowerCase();
+  @Inject
+  public TweetDetails(MbtaClient client) {
+    this.mbtaClient = client;
     this.lines = new HashSet<Line>();
     this.branches = new HashSet<Branch>();
     this.stations = new HashSet<Station>();
@@ -45,7 +48,6 @@ public class TweetDetails {
     this.retweet = false;
     this.official = false;
     this.category = null;
-    this.get();
   }
 
   public TweetDetails(Tweet tweet, Set<Line> lines, Set<Branch> branches, Set<Station> stations, Set<String> vehicles, Direction direction, Boolean image, Boolean retweet, Boolean official, String category) {
@@ -62,7 +64,9 @@ public class TweetDetails {
     this.category = category;
   }
 
-  public void get() {
+  public TweetDetails from(Tweet tweet) {
+    this.tweet = tweet;
+    this.lowercaseTweetText = tweet.getText().toLowerCase();
     getLinesFromTweet();
     getBranchesFromTweet();
     getStationsFromTweet();
@@ -71,6 +75,7 @@ public class TweetDetails {
     getHasImageFromTweet();
     getIsRetweetFromTweet();
     getIsOfficialFromTweet();
+    return this;
   }
 
   private void getLinesFromTweet() {
@@ -136,10 +141,21 @@ public class TweetDetails {
     }
   }
 
+  @Inject
   private void getVehiclesFromTweet() {
     Matcher m = Pattern.compile("\\d{3,5}").matcher(this.lowercaseTweetText);
-    while (m.find()) {
-      this.vehicles.add(m.group(0));
+    if (m.find()) {
+      m.reset();
+      List<Vehicle> vehicles = this.mbtaClient.getAllVehicles();
+      while (m.find()) {
+        vehicles.stream().filter(v -> m.group().equals(v.getId())).forEach(v -> {
+          this.vehicles.add(v.getId());
+          this.lines.add(v.getLine());
+          if (v.getBranch() != null) {
+            this.branches.add(v.getBranch());
+          }
+        });
+      }
     }
   }
 

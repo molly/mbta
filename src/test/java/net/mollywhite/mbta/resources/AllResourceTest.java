@@ -10,6 +10,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
 import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.client.MbtaClient;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.junit.After;
@@ -49,10 +50,11 @@ public class AllResourceTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
+    MbtaClient mbtaClient = new MbtaClient(mapper);
     retweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
     ashmontTweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
-    retweetDetails = new TweetDetails(retweet);
-    ashmontTweetDetails = new TweetDetails(ashmontTweet);
+    retweetDetails = new TweetDetails(mbtaClient).from(retweet);
+    ashmontTweetDetails = new TweetDetails(mbtaClient).from(ashmontTweet);
     resource = new AllResource(tweetDAO);
     tweetDAO.truncate();
   }

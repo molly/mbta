@@ -11,6 +11,7 @@ import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.client.MbtaClient;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.client.TwitterClient;
 import org.junit.After;
@@ -33,6 +34,7 @@ public class TweetDAOTest {
   private ObjectMapper mapper;
   private Connection connection;
   private TweetDAO tweetDAO;
+  private MbtaClient mbtaClient;
   private Tweet tweet;
 
   @ClassRule
@@ -47,6 +49,7 @@ public class TweetDAOTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
+    this.mbtaClient = new MbtaClient(mapper);
     tweet = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
     tweetDAO.truncate();
   }
@@ -77,7 +80,7 @@ public class TweetDAOTest {
   }
 
   private void insertTweet(Tweet tweet) throws JsonProcessingException, SQLException {
-    TweetDetails tweetDetails = new TweetDetails(tweet);
+    TweetDetails tweetDetails = new TweetDetails(this.mbtaClient).from(tweet);
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
     Set<String> stations = tweetDetails.getStationsAsStrings();

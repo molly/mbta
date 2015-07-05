@@ -11,6 +11,7 @@ import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.client.MbtaClient;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.junit.After;
@@ -49,8 +50,9 @@ public class LineResourceTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
+    MbtaClient mbtaClient = new MbtaClient(mapper);
     tweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
-    tweetDetails = new TweetDetails(tweet);
+    tweetDetails = new TweetDetails(mbtaClient).from(tweet);
     resource = new LineResource(tweetDAO);
     tweetDAO.truncate();
   }

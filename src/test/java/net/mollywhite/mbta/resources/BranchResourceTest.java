@@ -11,6 +11,7 @@ import net.mollywhite.mbta.MbtaApplication;
 import net.mollywhite.mbta.MbtaConfiguration;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Tweet;
+import net.mollywhite.mbta.client.MbtaClient;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.junit.After;
@@ -50,7 +51,8 @@ public class BranchResourceTest {
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
     tweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
-    tweetDetails = new TweetDetails(tweet);
+    MbtaClient mbtaClient = new MbtaClient(mapper);
+    tweetDetails = new TweetDetails(mbtaClient).from(tweet);
     resource = new BranchResource(tweetDAO);
     tweetDAO.truncate();
   }

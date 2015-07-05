@@ -40,7 +40,8 @@ public class TweetConsumerTest {
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
-    tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection);
+    MbtaClient mbtaClient = new MbtaClient(mapper);
+    tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection, mbtaClient);
     tweetDAO.truncate();
   }
 

@@ -19,7 +19,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 
-public class TwitterClientModule extends AbstractModule {
+public class ClientModule extends AbstractModule {
   @Override
   protected void configure() {
   }
@@ -63,5 +63,12 @@ public class TwitterClientModule extends AbstractModule {
     DataSourceFactory dsf = configuration.getDataSourceFactory();
     Connection c = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     return c;
+  }
+
+  @Provides
+  @Inject
+  MbtaClient provideMbtaClient(ObjectMapper mapper) throws IOException {
+    MbtaClient mbtaClient = new MbtaClient(mapper);
+    return mbtaClient;
   }
 }

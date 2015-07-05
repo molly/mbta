@@ -21,15 +21,17 @@ public class TweetConsumer implements Runnable {
   private final ObjectMapper mapper;
   private final TweetDAO tweetDAO;
   private final Connection connection;
+  private final MbtaClient mbtaClient;
 
   final Logger logger = LoggerFactory.getLogger(TweetConsumer.class);
 
   @Inject
-  TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, TweetDAO tweetDAO, Connection connection) {
+  TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, TweetDAO tweetDAO, Connection connection, MbtaClient mbtaClient) {
     this.twitterClient = twitterClient;
     this.mapper = mapper;
     this.tweetDAO = tweetDAO;
     this.connection = connection;
+    this.mbtaClient = mbtaClient;
   }
 
   public void run() {
@@ -55,7 +57,7 @@ public class TweetConsumer implements Runnable {
 
   @VisibleForTesting
   void insertTweet(Tweet tweet) throws JsonProcessingException, SQLException {
-    TweetDetails tweetDetails = new TweetDetails(tweet);
+    TweetDetails tweetDetails = new TweetDetails(this.mbtaClient).from(tweet);
     Set<String> lines = tweetDetails.getLinesAsStrings();
     Set<String> branches = tweetDetails.getBranchesAsStrings();
     Set<String> stations = tweetDetails.getStationsAsStrings();
