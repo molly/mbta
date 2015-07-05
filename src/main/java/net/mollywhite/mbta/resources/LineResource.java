@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -33,6 +34,21 @@ public class LineResource {
   @Path("/{line}")
   @Timed
   public Response getTweetsByLine(@PathParam("line") String lineStr) {
+    try {
+      Line line = Line.valueOf(lineStr.toUpperCase());
+      List<TweetDetails> tweets = tweetDAO.getTweetsByLine(line);
+      return Response.ok(tweets).build();
+    } catch (IllegalArgumentException e) {
+      return Response.status(Status.NOT_FOUND)
+          .entity("Line " + lineStr + " not found. Use one of " + Arrays.toString(Line.values()) + ".")
+          .build();
+    }
+  }
+
+  @POST // logical get
+  @Path("/{line}")
+  @Timed
+  public Response getTweetsByLineWithTime(@PathParam("line") String lineStr, String time) {
     try {
       Line line = Line.valueOf(lineStr.toUpperCase());
       List<TweetDetails> tweets = tweetDAO.getTweetsByLine(line);
