@@ -92,7 +92,7 @@ public class MbtaClient {
       }
       return respJson;
     } else {
-      logger.error("Request to MBTA API returned ", response.getStatus());
+      logger.error("Request to MBTA API returned %s", response.getStatus());
       return null;
     }
   }
