@@ -7,7 +7,7 @@ CREATE TABLE tweets (
   line        TEXT[],
   branch      TEXT[],
   station     TEXT[],
-  vehicles    TEXT[],
+  vehicle     TEXT[],
   direction   TEXT,
   image       BOOLEAN NOT NULL, 
   retweet     BOOLEAN NOT NULL,
