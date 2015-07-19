@@ -41,4 +41,7 @@ public interface TweetDAO {
 
   @SqlQuery("SELECT * FROM tweets")
   List<TweetDetails> getAllTweets();
+
+  @SqlQuery("SELECT * FROM tweets WHERE time >= :offset")
+  List<TweetDetails> getTweetsByHour(@Bind("offset") Timestamp offset);
 }

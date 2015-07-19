@@ -8,8 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Path("/all")
@@ -26,5 +31,20 @@ public class AllResource {
   @Timed
   public List<TweetDetails> get() {
     return this.tweetDAO.getAllTweets();
+  }
+
+  @GET
+  @Path("/hours/{hours}")
+  @Timed
+  public Response getTweetsByHour(@PathParam("hours") long hours) {
+    if (hours > 48) {
+      return Response.status(Status.BAD_REQUEST)
+          .entity("Getting tweets older than 48 hours not supported")
+          .build();
+    } else {
+      Timestamp offset = Timestamp.from(OffsetDateTime.now().minusHours(hours).toInstant());
+      List<TweetDetails> tweets = tweetDAO.getTweetsByHour(offset);
+      return Response.ok(tweets).build();
+    }
   }
 }

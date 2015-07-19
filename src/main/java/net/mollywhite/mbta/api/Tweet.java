@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 public class Tweet {
-  private final String createdAt;
+  private String createdAt;
   private final String idStr;
   private final String text;
   private final String inReplyToStatusIdStr;
@@ -52,13 +52,17 @@ public class Tweet {
     this.entities = entities;
   }
 
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
+
   public String getCreatedAt() {
     return createdAt;
   }
 
   @JsonIgnore
   public OffsetDateTime getCreatedAtDateTime() {
-    return CreatedAtFormatter.get(createdAt);
+    return CreatedAtFormatter.getTime(createdAt);
   }
 
   public String getIdStr() {
