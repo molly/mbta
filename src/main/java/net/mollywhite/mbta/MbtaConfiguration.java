@@ -9,12 +9,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class MbtaConfiguration extends Configuration {
-  @NotEmpty
-  private String template;
-
-  @NotEmpty
-  private String defaultName = "mbta";
-
   @Valid
   @NotNull
   @JsonProperty
@@ -34,26 +28,6 @@ public class MbtaConfiguration extends Configuration {
 
   @NotEmpty
   private String mbtaApiKey;
-
-  @JsonProperty
-  public String getTemplate() {
-    return template;
-  }
-
-  @JsonProperty
-  public void setTemplate(String template) {
-    this.template = template;
-  }
-
-  @JsonProperty
-  public String getDefaultName() {
-    return defaultName;
-  }
-
-  @JsonProperty
-  public void setDefaultName(String name) {
-    this.defaultName = name;
-  }
 
   public DataSourceFactory getDataSourceFactory() {
     return database;

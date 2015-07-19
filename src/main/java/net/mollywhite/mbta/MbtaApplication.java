@@ -11,7 +11,6 @@ import net.mollywhite.mbta.client.MbtaClient;
 import net.mollywhite.mbta.client.TweetConsumer;
 import net.mollywhite.mbta.client.TwitterClient;
 import net.mollywhite.mbta.dao.TweetDAO;
-import net.mollywhite.mbta.health.TemplateHealthCheck;
 import net.mollywhite.mbta.health.TwitterHealthCheck;
 import net.mollywhite.mbta.resources.AllResource;
 import net.mollywhite.mbta.resources.BranchResource;
@@ -48,14 +47,13 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
 
     final TwitterClient twitterClient = new TwitterClient(config.getTwitterConsumerKey(), config.getTwitterConsumerSecret(), config.getTwitterToken(), config.getTwitterSecret());
     final TwitterHealthCheck twitterHealthCheck = new TwitterHealthCheck(twitterClient);
-    final TemplateHealthCheck templateHealthCheck = new TemplateHealthCheck(config.getTemplate());
     final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
     final Connection connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     final MbtaClient mbtaClient = new MbtaClient(mapper, config.getMbtaApiKey());
     final TweetConsumer tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection, mbtaClient);
     TwitterClientManager twitterClientManager = new TwitterClientManager(tweetConsumer);
 
-    environment.healthChecks().register("template", templateHealthCheck);
     environment.healthChecks().register("Twitter healthcheck", twitterHealthCheck);
     environment.jersey().register(new AllResource(tweetDAO));
     environment.jersey().register(new BranchResource(tweetDAO));

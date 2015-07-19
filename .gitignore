@@ -17,3 +17,4 @@ target
 src/main/resources/secrets.properties
 mbta.yml
 test-config.yml
+dependency-reduced-pom.xml
