@@ -7,7 +7,7 @@ public class TwitterClientManager implements Managed {
   private final TweetConsumer tweetConsumer;
   Thread tweetConsumerThread;
 
-  TwitterClientManager (TweetConsumer tweetConsumer) {
+  public TwitterClientManager (TweetConsumer tweetConsumer) {
     this.tweetConsumer = tweetConsumer;
     tweetConsumerThread = new Thread(this.tweetConsumer);
   }

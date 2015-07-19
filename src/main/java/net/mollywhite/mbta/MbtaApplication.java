@@ -18,6 +18,7 @@ import net.mollywhite.mbta.resources.BranchResource;
 import net.mollywhite.mbta.resources.LineResource;
 import net.mollywhite.mbta.resources.StationResource;
 import net.mollywhite.mbta.resources.TweetResource;
+import net.mollywhite.mbta.services.TwitterClientManager;
 import org.skife.jdbi.v2.DBI;
 
 import java.sql.Connection;
@@ -53,6 +54,7 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
     final Connection connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     final MbtaClient mbtaClient = new MbtaClient(mapper, config.getMbtaApiKey());
     final TweetConsumer tweetConsumer = new TweetConsumer(twitterClient, mapper, tweetDAO, connection, mbtaClient);
+    TwitterClientManager twitterClientManager = new TwitterClientManager(tweetConsumer);
 
     environment.healthChecks().register("template", templateHealthCheck);
     environment.healthChecks().register("Twitter healthcheck", twitterHealthCheck);
@@ -61,5 +63,6 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
     environment.jersey().register(new LineResource(tweetDAO));
     environment.jersey().register(new StationResource(tweetDAO));
     environment.jersey().register(new TweetResource(tweetDAO));
+    environment.lifecycle().manage(twitterClientManager);
   }
 }
