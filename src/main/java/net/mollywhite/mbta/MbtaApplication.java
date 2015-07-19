@@ -17,7 +17,6 @@ import net.mollywhite.mbta.resources.AllResource;
 import net.mollywhite.mbta.resources.BranchResource;
 import net.mollywhite.mbta.resources.LineResource;
 import net.mollywhite.mbta.resources.StationResource;
-import net.mollywhite.mbta.resources.TweetResource;
 import net.mollywhite.mbta.services.TwitterClientManager;
 import org.skife.jdbi.v2.DBI;
 
@@ -62,7 +61,6 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
     environment.jersey().register(new BranchResource(tweetDAO));
     environment.jersey().register(new LineResource(tweetDAO));
     environment.jersey().register(new StationResource(tweetDAO));
-    environment.jersey().register(new TweetResource(tweetDAO));
     environment.lifecycle().manage(twitterClientManager);
   }
 }
