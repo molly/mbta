@@ -1,6 +1,10 @@
 package net.mollywhite.mbta.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.mollywhite.mbta.api.TweetsByLine;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.slf4j.Logger;
@@ -21,6 +25,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class AllResource {
   private final TweetDAO tweetDAO;
+  final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   final Logger logger = LoggerFactory.getLogger(AllResource.class);
 
   public AllResource(TweetDAO tweetDAO) {
@@ -45,6 +50,19 @@ public class AllResource {
       Timestamp offset = Timestamp.from(OffsetDateTime.now().minusHours(hours).toInstant());
       List<TweetDetails> tweets = tweetDAO.getTweetsByHour(offset);
       return Response.ok(tweets).build();
+    }
+  }
+
+  @GET
+  @Path("/hours/{hours}/line")
+  public Response getTweetsByHourByLine(@PathParam("hours") long hours) throws JsonProcessingException {
+    Response resp = getTweetsByHour(hours);
+    if (resp.getStatus() != 200) {
+      return resp;
+    } else {
+      List<TweetDetails> tweets = (List<TweetDetails>) resp.getEntity();
+      TweetsByLine tweetsByLine = new TweetsByLine(tweets);
+      return resp.ok(mapper.writeValueAsString(tweetsByLine)).build();
     }
   }
 }

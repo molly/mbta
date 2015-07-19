@@ -2,6 +2,7 @@ package net.mollywhite.mbta.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
@@ -40,6 +41,8 @@ public class AllResourceTest {
   private Tweet ashmontTweet;
   private TweetDetails retweetDetails;
   private TweetDetails ashmontTweetDetails;
+  private TweetDetails tweetDetails61minutesAgo;
+  private TweetDetails tweetDetails30minutesAgo;
   private TweetDAO tweetDAO;
   private Connection connection;
 
@@ -60,6 +63,14 @@ public class AllResourceTest {
     ashmontTweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
     retweetDetails = new TweetDetails(mbtaClient).from(retweet);
     ashmontTweetDetails = new TweetDetails(mbtaClient).from(ashmontTweet);
+    String time61minutesAgo = CreatedAtFormatter.getString(OffsetDateTime.now().minusMinutes(61));
+    String time30minutesAgo = CreatedAtFormatter.getString(OffsetDateTime.now().minusMinutes(30));
+    Tweet tweet61minutesAgo = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    tweet61minutesAgo.setCreatedAt(time61minutesAgo);
+    this.tweetDetails61minutesAgo = new TweetDetails(mbtaClient).from(tweet61minutesAgo);
+    Tweet tweet30minutesAgo = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
+    tweet30minutesAgo.setCreatedAt(time30minutesAgo);
+    this.tweetDetails30minutesAgo = new TweetDetails(mbtaClient).from(tweet30minutesAgo);
     resource = new AllResource(tweetDAO);
     tweetDAO.truncate();
   }
@@ -80,21 +91,27 @@ public class AllResourceTest {
 
   @Test
   public void testGetTweetsByHour() throws Exception {
-    String time61minutesAgo = CreatedAtFormatter.getString(OffsetDateTime.now().minusMinutes(61));
-    String time30minutesAgo = CreatedAtFormatter.getString(OffsetDateTime.now().minusMinutes(30));
-    Tweet tweet61minutesAgo = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
-    tweet61minutesAgo.setCreatedAt(time61minutesAgo);
-    TweetDetails tweetDetails61minutesAgo = new TweetDetails(mbtaClient).from(tweet61minutesAgo);
-    Tweet tweet30minutesAgo = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
-    tweet30minutesAgo.setCreatedAt(time30minutesAgo);
-    TweetDetails tweetDetails30minutesAgo = new TweetDetails(mbtaClient).from(tweet30minutesAgo);
-
     insertTweetDetails(tweetDetails61minutesAgo);
     insertTweetDetails(tweetDetails30minutesAgo);
     Response response = resource.getTweetsByHour(1);
     assertThat(response.getStatus()).isEqualTo(200);
     assertThat((List<TweetDetails>) response.getEntity()).hasSize(1);
   }
+
+  @Test
+  public void testGetTweetsByHourByLine() throws Exception {
+    insertTweetDetails(tweetDetails61minutesAgo);
+    insertTweetDetails(tweetDetails30minutesAgo);
+    Response response = resource.getTweetsByHourByLine(1);
+    assertThat(response.getStatus()).isEqualTo(200);
+    JsonNode node = mapper.readTree((String) response.getEntity());
+    assertThat(node.get("orange")).hasSize(1);
+    assertThat(node.get("blue")).isEmpty();
+    assertThat(node.get("green")).isEmpty();
+    assertThat(node.get("red")).isEmpty();
+    assertThat(node.get("other")).isEmpty();
+  }
+
 
   private void insertTweetDetails(TweetDetails tweetDetails) throws JsonProcessingException, SQLException {
     Tweet tweet = tweetDetails.getTweet();
