@@ -1,0 +1,27 @@
+database:
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: OQnjRYXwN4ww
+  url: jdbc:postgresql://localhost:5432/mbtatest
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "/* Test database health check */ SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  evictionInterval: 10s
+  minIdleTime: 1 minute
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: EST
+      target: stdout
+twitterConsumerKey: 8yv1nA6AadlNxRwlbBSQgOFvP
+twitterConsumerSecret: v2MUP5XDruM7PLGuuYG4gTMmz0G9a67TNaHLyqR4oiq6z68U6U
+twitterSecret: tgHTnwCYlU9q6qTz1yKh6bTwN4stQ9eyTAmn0tZw3tMhE
+twitterToken: 545445165-Mbwc1h5pqc6xgzHD6EPYGr5OMzpMwSiE5pNnwpma
+mbtaApiKey: 8G1sp1dkbEycmDu26yU9FQ
