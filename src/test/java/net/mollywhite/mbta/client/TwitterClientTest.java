@@ -1,6 +1,11 @@
 package net.mollywhite.mbta.client;
 
+import io.dropwizard.testing.ResourceHelpers;
+import io.dropwizard.testing.junit.DropwizardAppRule;
+import net.mollywhite.mbta.MbtaApplication;
+import net.mollywhite.mbta.MbtaConfiguration;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,10 +17,13 @@ import static org.junit.Assert.assertNotNull;
 
 public class TwitterClientTest {
   TwitterClient twitterClient;
+  @ClassRule
+  public static final DropwizardAppRule<MbtaConfiguration> RULE= new DropwizardAppRule<MbtaConfiguration>(MbtaApplication.class, ResourceHelpers.resourceFilePath("test-config.yml"));
 
   @Before
   public void setUp() throws IOException {
-    twitterClient = new TwitterClient();
+    MbtaConfiguration config = RULE.getConfiguration();
+    twitterClient = new TwitterClient(config.getTwitterConsumerKey(), config.getTwitterConsumerSecret(), config.getTwitterToken(), config.getTwitterSecret());
   }
 
   @Test

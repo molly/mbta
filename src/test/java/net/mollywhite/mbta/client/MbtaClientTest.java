@@ -26,7 +26,7 @@ public class MbtaClientTest {
   public void setUp() throws Exception {
     this.client = ClientBuilder.newClient();
     ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    this.mbtaClient = new MbtaClient(mapper);
+    this.mbtaClient = new MbtaClient(mapper, RULE.getConfiguration().getMbtaApiKey());
   }
 
   @Test

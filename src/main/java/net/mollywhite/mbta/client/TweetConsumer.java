@@ -3,7 +3,6 @@ package net.mollywhite.mbta.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Tweet;
 import net.mollywhite.mbta.dao.TweetDAO;
 import org.slf4j.Logger;
@@ -25,8 +24,7 @@ public class TweetConsumer implements Runnable {
 
   final Logger logger = LoggerFactory.getLogger(TweetConsumer.class);
 
-  @Inject
-  TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, TweetDAO tweetDAO, Connection connection, MbtaClient mbtaClient) {
+  public TweetConsumer(TwitterClient twitterClient, ObjectMapper mapper, TweetDAO tweetDAO, Connection connection, MbtaClient mbtaClient) {
     this.twitterClient = twitterClient;
     this.mapper = mapper;
     this.tweetDAO = tweetDAO;
@@ -78,12 +76,13 @@ public class TweetConsumer implements Runnable {
         tweetDetails.getOfficial(),
         tweetDetails.getCategory());
 
-    logger.info("Inserted: {}\n{}\nLines: {}\tBranches:{}\tStations: {}\tVehicles: {}\tDirection: {}\nImage: {}\t" +
-            "Retweet: {}\tOfficial: {}\tCategory: {}", tweet.getText(), tweet.getCreatedAt().toString(),
-        tweetDetails.getLines().toString(), tweetDetails.getBranches().toString(), tweetDetails.getStations().toString(),
-        tweetDetails.getVehicles().toString(), tweetDetails.getDirection() != null ? tweetDetails.getDirection().name() : null,
-        tweetDetails.getImage().toString(), tweetDetails.getRetweet().toString(), tweetDetails.getOfficial().toString(),
-        tweetDetails.getCategory());
+    logger.info("Inserted: " + tweet.getText() + "\n" + tweet.getCreatedAt() + "Lines: " +
+        tweetDetails.getLines().toString() + "\tBranches: " + tweetDetails.getBranches().toString() +
+        "\tStations: " + tweetDetails.getStations().toString() + "\tVehicles: " +
+        tweetDetails.getVehicles().toString() + "\tDirection: " +
+        (tweetDetails.getDirection() != null ? tweetDetails.getDirection().name() : "") +
+        "\nImage: " + tweetDetails.getImage().toString() + "\tRetweet: " + tweetDetails.getRetweet().toString() +
+        "\tOfficial: " + tweetDetails.getOfficial().toString() + "\tCategory: " + tweetDetails.getCategory());
   }
 
   public int count() {

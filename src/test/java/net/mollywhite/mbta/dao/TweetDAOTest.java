@@ -42,14 +42,15 @@ public class TweetDAOTest {
 
   @Before
   public void setUp() throws Exception {
-    DataSourceFactory dsf = RULE.getConfiguration().getDataSourceFactory();
+    MbtaConfiguration config = RULE.getConfiguration();
+    DataSourceFactory dsf = config.getDataSourceFactory();
     connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
-    TwitterClient twitterClient = new TwitterClient();
+    TwitterClient twitterClient = new TwitterClient(config.getTwitterConsumerKey(), config.getTwitterConsumerSecret(), config.getTwitterToken(), config.getTwitterSecret());
     mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
-    this.mbtaClient = new MbtaClient(mapper);
+    this.mbtaClient = new MbtaClient(mapper, config.getMbtaApiKey());
     tweet = mapper.readValue(fixture("fixtures/TweetWithReplyToFixture.json"), Tweet.class);
     tweetDAO.truncate();
   }

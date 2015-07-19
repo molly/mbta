@@ -44,14 +44,15 @@ public class StationResourceTest {
 
   @Before
   public void setUp() throws Exception {
-    DataSourceFactory dsf = RULE.getConfiguration().getDataSourceFactory();
+    MbtaConfiguration config = RULE.getConfiguration();
+    DataSourceFactory dsf = config.getDataSourceFactory();
     connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
     tweet = mapper.readValue(fixture("fixtures/TweetWithCoordsFixture.json"), Tweet.class);
-    MbtaClient mbtaClient = new MbtaClient(mapper);
+    MbtaClient mbtaClient = new MbtaClient(mapper, config.getMbtaApiKey());
     tweetDetails = new TweetDetails(mbtaClient).from(tweet);
     resource = new StationResource(tweetDAO);
     tweetDAO.truncate();

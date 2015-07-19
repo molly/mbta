@@ -1,6 +1,5 @@
 package net.mollywhite.mbta.services;
 
-import com.google.inject.Inject;
 import io.dropwizard.lifecycle.Managed;
 import net.mollywhite.mbta.client.TweetConsumer;
 
@@ -8,7 +7,6 @@ public class TwitterClientManager implements Managed {
   private final TweetConsumer tweetConsumer;
   Thread tweetConsumerThread;
 
-  @Inject
   TwitterClientManager (TweetConsumer tweetConsumer) {
     this.tweetConsumer = tweetConsumer;
     tweetConsumerThread = new Thread(this.tweetConsumer);

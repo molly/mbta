@@ -2,7 +2,6 @@ package net.mollywhite.mbta.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Direction;
 import net.mollywhite.mbta.api.Line;
@@ -36,7 +35,6 @@ public class TweetDetails {
 
   private static Logger logger = LoggerFactory.getLogger(TweetDetails.class);
 
-  @Inject
   public TweetDetails(MbtaClient client) {
     this.mbtaClient = client;
     this.lines = new HashSet<Line>();
@@ -130,18 +128,19 @@ public class TweetDetails {
 
         stations.add(station);
         if (Collections.disjoint(lines, stationLines)) {
-          logger.info("Mismatch between recorded lines and station lines. Recorded: {}. New: {}. Tweet: {}.", lines.toString(), stationLines.toString(), this.tweet.getText());
+          logger.info("Mismatch between recorded lines and station lines. Recorded: " + lines.toString() + ". New: " +
+              stationLines.toString() + ". Tweet: " + this.tweet.getText() + ".");
         }
         lines.addAll(stationLines);
         if (Collections.disjoint(branches, stationBranches)) {
-          logger.info("Mismatch between recorded branches and station branches. Recorded: {}. New: {}. Tweet: {}.", lines.toString(), stationBranches.toString(), this.tweet.getText());
+          logger.info("Mismatch between recorded branches and station branches. Recorded: " + lines.toString() +
+              ". New: " + stationBranches.toString() + ". Tweet: " + this.tweet.getText() + ".");
         }
         branches.addAll(station.getBranches());
       }
     }
   }
 
-  @Inject
   private void getVehiclesFromTweet() {
     Matcher m = Pattern.compile("\\d{3,5}").matcher(this.lowercaseTweetText);
     if (m.find()) {

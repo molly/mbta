@@ -1,7 +1,6 @@
 package net.mollywhite.mbta.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.client.TweetDetails;
 import net.mollywhite.mbta.dao.TweetDAO;
@@ -24,7 +23,6 @@ public class BranchResource {
   private final TweetDAO tweetDAO;
   final Logger logger = LoggerFactory.getLogger(BranchResource.class);
 
-  @Inject
   public BranchResource(TweetDAO tweetDAO) {
     this.tweetDAO = tweetDAO;
   }

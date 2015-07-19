@@ -41,6 +41,4 @@ public interface TweetDAO {
 
   @SqlQuery("SELECT * FROM tweets")
   List<TweetDetails> getAllTweets();
-
-  void close();
 }

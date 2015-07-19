@@ -3,7 +3,6 @@ package net.mollywhite.mbta.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 import net.mollywhite.mbta.api.Branch;
 import net.mollywhite.mbta.api.Line;
 import net.mollywhite.mbta.api.Route;
@@ -18,11 +17,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 public class MbtaClient {
   private final Client client;
@@ -32,15 +29,11 @@ public class MbtaClient {
   private final List<Route> routeIds;
   final Logger logger = LoggerFactory.getLogger(TweetConsumer.class);
 
-  @Inject
-  public MbtaClient(ObjectMapper mapper) throws IOException {
+  public MbtaClient(ObjectMapper mapper, String mbtaApiKey) throws IOException {
     this.mapper = mapper;
     this.client = ClientBuilder.newClient();
     this.baseURL = "http://realtime.mbta.com/developer/api/v2/";
-    Properties props = new Properties();
-    InputStream is = this.getClass().getClassLoader().getResourceAsStream("./secrets.properties");
-    props.load(is);
-    this.apiKey = props.getProperty("mbtaApiKey");
+    this.apiKey = mbtaApiKey;
     this.routeIds = Lists.newArrayList(
         new Route("Green-B", Line.GREEN, Branch.B),
         new Route("Green-C", Line.GREEN, Branch.C),
@@ -92,7 +85,7 @@ public class MbtaClient {
       }
       return respJson;
     } else {
-      logger.error("Request to MBTA API returned %s", response.getStatus());
+      logger.error("Request to MBTA API returned " + response.getStatus());
       return null;
     }
   }

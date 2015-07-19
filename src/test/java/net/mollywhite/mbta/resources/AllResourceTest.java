@@ -44,13 +44,14 @@ public class AllResourceTest {
 
   @Before
   public void setUp() throws Exception {
-    DataSourceFactory dsf = RULE.getConfiguration().getDataSourceFactory();
+    MbtaConfiguration config = RULE.getConfiguration();
+    DataSourceFactory dsf = config.getDataSourceFactory();
     connection = DriverManager.getConnection(dsf.getUrl(), dsf.getUser(), dsf.getPassword());
     mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final DBIFactory factory = new DBIFactory();
     DBI dbi = factory.build(RULE.getEnvironment(), dsf, "postgresql");
     tweetDAO = dbi.onDemand(TweetDAO.class);
-    MbtaClient mbtaClient = new MbtaClient(mapper);
+    MbtaClient mbtaClient = new MbtaClient(mapper, config.getMbtaApiKey());
     retweet = mapper.readValue(fixture("fixtures/RetweetFixture.json"), Tweet.class);
     ashmontTweet = mapper.readValue(fixture("fixtures/AshmontFixture.json"), Tweet.class);
     retweetDetails = new TweetDetails(mbtaClient).from(retweet);

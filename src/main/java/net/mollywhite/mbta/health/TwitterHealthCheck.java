@@ -1,20 +1,16 @@
 package net.mollywhite.mbta.health;
 
-import com.google.inject.Inject;
-import com.hubspot.dropwizard.guice.InjectableHealthCheck;
+import com.codahale.metrics.health.HealthCheck;
 import net.mollywhite.mbta.client.TwitterClient;
 
-public class TwitterHealthCheck extends InjectableHealthCheck {
+import javax.inject.Inject;
+
+public class TwitterHealthCheck extends HealthCheck {
   private final TwitterClient client;
 
   @Inject
   public TwitterHealthCheck(TwitterClient client) {
     this.client = client;
-  }
-
-  @Override
-  public String getName() {
-    return "Twitter health check";
   }
 
   @Override
