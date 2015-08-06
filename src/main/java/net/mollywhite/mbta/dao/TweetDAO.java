@@ -45,6 +45,6 @@ public interface TweetDAO {
   @SqlQuery("SELECT * FROM tweets WHERE time >= :offset")
   List<TweetDetails> getTweetsByHour(@Bind("offset") Timestamp offset);
 
-  @SqlUpdate("DELETE * FROM tweets WHERE time <= :offset")
+  @SqlUpdate("DELETE FROM tweets * WHERE time <= :offset")
   int deleteOldTweets(@Bind("offset") Timestamp offset);
 }
