@@ -3,6 +3,7 @@ package net.mollywhite.mbta;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -37,6 +38,7 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
 
   @Override
   public void initialize(Bootstrap bootstrap) {
+    bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
   }
 
   @Override
