@@ -1,6 +1,6 @@
 database:
   driverClass: org.postgresql.Driver
-  user: postgres
+  user: molly
   password: OQnjRYXwN4ww
   url: jdbc:postgresql://localhost:5432/mbtatest
   properties:
