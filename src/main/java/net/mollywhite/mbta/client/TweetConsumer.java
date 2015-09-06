@@ -65,6 +65,7 @@ public class TweetConsumer implements Runnable {
       double longestSubstring = this.longestSubstring(tweetText, storedText);
       double shortestStringLength = tweetText.length() < storedText.length() ? tweetText.length() : storedText.length();
       if ((longestSubstring / shortestStringLength) > 0.5) {
+        logger.info("Not inserting \"{}\". Too similar to \"{}\".", tweet.getText(), stored.getTweet().getText());
         return false;
       }
     }
@@ -86,9 +87,6 @@ public class TweetConsumer implements Runnable {
       table[0][s] = 0;
     for(int f=0; f <= fl; f++)
       table[f][0] = 0;
-
-
-
 
     for (int i = 1; i <= fl; i++) {
       for (int j = 1; j <= sl; j++) {
