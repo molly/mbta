@@ -63,8 +63,8 @@ public class TweetConsumer implements Runnable {
     for (TweetDetails stored : recentStoredTweets) {
       String storedText = stored.getLowercaseTweetText();
       double longestSubstring = this.longestSubstring(tweetText, storedText);
-      double shortestStringLength = tweetText.length() < storedText.length() ? tweetText.length() : storedText.length();
-      if ((longestSubstring / shortestStringLength) > 0.5) {
+      double longestStringLength = tweetText.length() > storedText.length() ? tweetText.length() : storedText.length();
+      if ((longestSubstring / longestStringLength) > 0.7) {
         logger.info("Not inserting \"{}\". Too similar to \"{}\".", tweet.getText(), stored.getTweet().getText());
         return false;
       }

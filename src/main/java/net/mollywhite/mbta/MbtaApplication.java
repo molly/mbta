@@ -38,7 +38,7 @@ public class MbtaApplication extends Application<MbtaConfiguration> {
 
   @Override
   public void initialize(Bootstrap bootstrap) {
-    bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
+//    bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
   }
 
   @Override
